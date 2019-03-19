@@ -1,0 +1,34 @@
+{
+  "name": "myFlixApp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamwill123/myFlixApp.git"
+  },
+  "keywords": [],
+  "author": "William Pei Yuan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iamwill123/myFlixApp/issues"
+  },
+  "homepage": "https://github.com/iamwill123/myFlixApp#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.4.19",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.15.0"
+  }
+}
