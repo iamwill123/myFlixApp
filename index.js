@@ -13,6 +13,9 @@ app.use(bodyParser.json());
 // Logs every request info to terminal
 app.use(morgan('common'));
 
+var auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 // allows Mongoose to connect to the database thus integrating it with the REST API
 mongoose.connect('mongodb://localhost:27017/myFlixDB', {
   useNewUrlParser: true
