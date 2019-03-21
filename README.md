@@ -1,2 +1,7 @@
 # myFlixApp
 jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGYXZvcml0ZU1vdmllcyI6W10sIl9pZCI6IjVjOTE2N2JjNTQzOWEwNDk2ZTQyODJiYyIsIlVzZXJuYW1lIjoiaWFtd2lsbCIsIlBhc3N3b3JkIjoicG9zdHkxMjMiLCJFbWFpbCI6IndpbGxAaWFtd2lsbC51cyIsIkJpcnRoZGF5IjoiMTk4NS0wNC0wNFQwNTowMDowMC4wMDBaIiwiX192IjowLCJpYXQiOjE1NTMwMzk4NDksImV4cCI6MTU1MzY0NDY0OSwic3ViIjoiaWFtd2lsbCJ9.n2de855jRddIIa5BS4t13ODGU9SzGcDoH9xln1jOuP0"
+
+Resources:
+- https://twm.me/correct-way-to-use-mongoose/
+- https://www.techcress.com/mongoose-js-query-cheatsheet/
+https://www.opentechguides.com/how-to/article/mongodb/118/mongodb-cheatsheat.html

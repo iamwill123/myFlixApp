@@ -1,21 +1,36 @@
 const express = require('express'),
+  app = express(),
   morgan = require('morgan'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose'),
-  Models = require('./models.js');
-
-const app = express(),
+  Models = require('./models.js'),
+  auth = require('./auth')(app),
+  passport = require('passport'),
+  cors = require('cors'),
   Movies = Models.Movie,
   Users = Models.User;
 
 app.use(bodyParser.json());
-
 // Logs every request info to terminal
 app.use(morgan('common'));
-
-var auth = require('./auth')(app);
-const passport = require('passport');
+// our passport setup
 require('./passport');
+// CORS setup
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+const configs = {
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+
+    // If a specific origin isn’t found on the list of allowed origins
+    if (allowedOrigins.indexOf(origin) === -1) {
+      var message = `The CORS policy for this application doesn’t allow access from origin ${origin}`;
+      return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  }
+};
+app.use(cors(configs));
+
 // allows Mongoose to connect to the database thus integrating it with the REST API
 mongoose.connect('mongodb://localhost:27017/myFlixDB', {
   useNewUrlParser: true
