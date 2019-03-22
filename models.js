@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+  bcrypt = require('bcrypt');
 
 var movieSchema = mongoose.Schema({
   Title: {
@@ -45,6 +46,16 @@ var userSchema = mongoose.Schema({
     }
   ]
 });
+
+// bcrypt -> Hashing, on the other hand, is the process of turning data into a string of text or numbers that (with a good hashing algorithm) can’t be turned back into the original string. Once the data has been hashed, it’s no longer accessible to anyone.
+
+userSchema.statics.hashPassword = password => {
+  return bcrypt.hashSync(password, 10);
+};
+
+userSchema.methods.validatePassword = password => {
+  return bcrypt.compare(password, this.password);
+};
 
 var Movie = mongoose.model('Movie', movieSchema);
 var User = mongoose.model('User', userSchema);

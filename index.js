@@ -7,12 +7,16 @@ const express = require('express'),
   auth = require('./auth')(app),
   passport = require('passport'),
   cors = require('cors'),
+  validator = require('express-validator'),
   Movies = Models.Movie,
   Users = Models.User;
 
+// app.use(middleware) -> adds middleware to our express app
 app.use(bodyParser.json());
 // Logs every request info to terminal
 app.use(morgan('common'));
+// Server-Side Validation
+app.use(validator());
 // our passport setup
 require('./passport');
 // CORS setup
@@ -117,6 +121,25 @@ app.post('/users', passport.authenticate('jwt', { session: false }), function(
   req,
   res
 ) {
+  // Validation logic here for request
+  req.checkBody('Username', 'Username is required').notEmpty();
+  req
+    .checkBody(
+      'Username',
+      'Username contains non alphanumeric characters - not allowed.'
+    )
+    .isAlphanumeric();
+  req.checkBody('Password', 'Password is required').notEmpty();
+  req.checkBody('Email', 'Email is required').notEmpty();
+  req.checkBody('Email', 'Email does not appear to be valid').isEmail();
+
+  // check the validation object for errors
+  var errors = req.validationErrors();
+
+  if (errors) {
+    return res.status(422).json({ errors: errors });
+  }
+  var hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({
     Username: req.body.Username
   })
@@ -126,7 +149,7 @@ app.post('/users', passport.authenticate('jwt', { session: false }), function(
       } else {
         Users.create({
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday
         })
@@ -290,4 +313,9 @@ app.use(function(err, req, res, next) {
   res.status(500).send('Oops! Something went wrong... please retry!');
 });
 
-app.listen(8080);
+var port = process.env.PORT || 3000;
+app.listen(port, '0.0.0.0', function() {
+  console.log(
+    `Server listening on ${port === 3000 ? 'http://localhost:3000' : port}`
+  );
+});
