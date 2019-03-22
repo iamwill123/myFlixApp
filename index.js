@@ -20,7 +20,7 @@ app.use(validator());
 // our passport setup
 require('./passport');
 // CORS setup
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:3000','http://testsite.com'];
 const configs = {
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
@@ -36,7 +36,12 @@ const configs = {
 app.use(cors(configs));
 
 // allows Mongoose to connect to the database thus integrating it with the REST API
-mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+//   useNewUrlParser: true
+// });
+// MongoDB connection string
+var connection = 'mongodb+srv://myFlixDBadmin:Posty321!@cluster0-3rjjl.gcp.mongodb.net/myFlixDB?retryWrites=true'
+mongoose.connect(connection, {
   useNewUrlParser: true
 });
 
