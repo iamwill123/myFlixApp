@@ -20,7 +20,12 @@ app.use(validator());
 // our passport setup
 require('./passport');
 // CORS setup
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:3000','http://testsite.com'];
+let allowedOrigins = [
+  'http://localhost:8080',
+  'http://localhost:3000',
+  'http://testsite.com',
+  'https://my-flix-db-11209.herokuapp.com'
+];
 const configs = {
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
@@ -40,7 +45,8 @@ app.use(cors(configs));
 //   useNewUrlParser: true
 // });
 // MongoDB connection string
-var connection = 'mongodb+srv://myFlixDBadmin:Posty321!@cluster0-3rjjl.gcp.mongodb.net/myFlixDB?retryWrites=true'
+var connection =
+  'mongodb+srv://myFlixDBadmin:Posty321!@cluster0-3rjjl.gcp.mongodb.net/myFlixDB?retryWrites=true';
 mongoose.connect(connection, {
   useNewUrlParser: true
 });
@@ -62,18 +68,22 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), function(
 });
 
 // Returns data about a single movie by title
-app.get('/movies/:Title', function(req, res) {
-  Movies.findOne({
-    Title: req.params.Title
-  })
-    .then(function(movie) {
-      res.json(movie);
+app.get(
+  '/movies/:Title',
+  passport.authenticate('jwt', { session: false }),
+  function(req, res) {
+    Movies.findOne({
+      Title: req.params.Title
     })
-    .catch(function(err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
+      .then(function(movie) {
+        res.json(movie);
+      })
+      .catch(function(err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
+);
 
 // Returns data about a genre by title
 app.get(
