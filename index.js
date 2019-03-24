@@ -23,9 +23,8 @@ app.use(validator());
 // CORS setup
 let allowedOrigins = [
   'http://localhost:8080',
-  'http://localhost:3000',
-  'http://testsite.com',
-  'https://my-flix-db-11209.herokuapp.com'
+  'http://localhost:3000'
+  // 'https://my-flix-db-11209.herokuapp.com'
 ];
 const configs = {
   origin: (origin, callback) => {
