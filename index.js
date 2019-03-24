@@ -15,10 +15,11 @@ const express = require('express'),
 app.use(bodyParser.json());
 // Logs every request info to terminal
 app.use(morgan('common'));
-// Server-Side Validation
-app.use(validator());
 // our passport setup
 require('./passport');
+// Server-Side Validation
+app.use(validator());
+
 // CORS setup
 let allowedOrigins = [
   'http://localhost:8080',
@@ -131,11 +132,8 @@ app.get(
   }
 );
 
-//Allows new users to register
-app.post('/users', passport.authenticate('jwt', { session: false }), function(
-  req,
-  res
-) {
+// Allows new users to register
+app.post('/users', function(req, res) {
   // Validation logic here for request
   req.checkBody('Username', 'Username is required').notEmpty();
   req
@@ -150,7 +148,7 @@ app.post('/users', passport.authenticate('jwt', { session: false }), function(
 
   // check the validation object for errors
   var errors = req.validationErrors();
-
+  console.log(errors);
   if (errors) {
     return res.status(422).json({ errors: errors });
   }
