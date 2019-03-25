@@ -11,20 +11,20 @@ const express = require('express'),
   Movies = Models.Movie,
   Users = Models.User;
 
-// app.use(middleware) -> adds middleware to our express app
-app.use(bodyParser.json());
-// Logs every request info to terminal
-app.use(morgan('common'));
 // our passport setup
 require('./passport');
+// app.use(middleware) -> adds middleware to our express app
+app.use(bodyParser.json());
+// https://www.npmjs.com/package/body-parser#bodyparserurlencodedoptions
+app.use(bodyParser.urlencoded({ extended: true }));
+// Logs every request info to terminal
+app.use(morgan('common'));
 // Server-Side Validation
 app.use(validator());
 
 // CORS setup
 let allowedOrigins = [
-  'http://localhost:8080',
   'http://localhost:3000'
-  // 'https://my-flix-db-11209.herokuapp.com'
 ];
 const configs = {
   origin: (origin, callback) => {
