@@ -9,7 +9,7 @@ const express = require('express'),
   cors = require('cors'),
   validator = require('express-validator'),
   Movies = Models.Movie,
-  Users = Models.User;
+  User = Models.User;
 
 // our passport setup
 require('./passport');
@@ -173,19 +173,19 @@ app.post('/user', function(req, res) {
           res.status(201).json(savedUser);
         });
 
-        // User.create({
-        //   Username: req.body.Username,
-        //   Password: hashedPassword,
-        //   Email: req.body.Email,
-        //   Birthday: req.body.Birthday
-        // })
-        //   .then(function(user) {
-        //     res.status(201).json(user);
-        //   })
-        //   .catch(function(error) {
-        //     console.error(error);
-        //     res.status(500).send('Error: ' + error);
-        //   });
+        User.create({
+          Username: req.body.Username,
+          Password: hashedPassword,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday
+        })
+          .then(function(user) {
+            res.status(201).json(user);
+          })
+          .catch(function(error) {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          });
       }
     })
     .catch(function(error) {
@@ -195,11 +195,11 @@ app.post('/user', function(req, res) {
 });
 
 //list of all users for test needs
-app.get('/users', passport.authenticate('jwt', { session: false }), function(
+app.get('/user', passport.authenticate('jwt', { session: false }), function(
   req,
   res
 ) {
-  Users.find()
+  User.find()
     .then(function(users) {
       res.status(201).json(users);
     })
@@ -211,10 +211,10 @@ app.get('/users', passport.authenticate('jwt', { session: false }), function(
 
 //Allows to update user info, :Username is case sensitive
 app.put(
-  '/users/:Username',
+  '/user/:Username',
   passport.authenticate('jwt', { session: false }),
   function(req, res) {
-    Users.update(
+    User.update(
       {
         Username: req.params.Username
       },
@@ -243,11 +243,11 @@ app.put(
 
 //Allows users to add a movie to their list of favorites
 app.post(
-  '/users/:Username/FavoriteMovies/:MovieID',
+  '/user/:Username/FavoriteMovies/:MovieID',
   passport.authenticate('jwt', { session: false }),
   function(req, res) {
     const { Username, MovieID } = req.params;
-    Users.findOneAndUpdate(
+    User.findOneAndUpdate(
       {
         Username: Username
       },
@@ -274,12 +274,12 @@ app.post(
 // Allows users to remove a movie from their list of favorites
 // https://mongoosejs.com/docs/api.html#model_Model.findOneAndUpdate
 app.delete(
-  '/users/:Username/FavoriteMovies/:MovieID',
+  '/user/:Username/FavoriteMovies/:MovieID',
   passport.authenticate('jwt', { session: false }),
   function(req, res) {
     const { Username, MovieID } = req.params;
     console.log(Username, MovieID);
-    Users.findOneAndUpdate(
+    User.findOneAndUpdate(
       // Update instead of findOneAndRemove
       {
         Username: Username
@@ -306,10 +306,10 @@ app.delete(
 
 //Allows existing users to deregister by username
 app.delete(
-  '/users/:Username',
+  '/user/:Username',
   passport.authenticate('jwt', { session: false }),
   function(req, res) {
-    Users.findOneAndRemove({
+    User.findOneAndRemove({
       Username: req.params.Username
     })
       .then(function(user) {
