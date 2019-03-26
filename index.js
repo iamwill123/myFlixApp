@@ -23,9 +23,7 @@ app.use(morgan('common'));
 app.use(validator());
 
 // CORS setup
-let allowedOrigins = [
-  'http://localhost:3000'
-];
+let allowedOrigins = ['http://localhost:3000'];
 const configs = {
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
@@ -131,8 +129,8 @@ app.get(
   }
 );
 
-// Allows new users to register
-app.post('/users', function(req, res) {
+// Allows new user to register
+app.post('/user', function(req, res) {
   // Validation logic here for request
   req.checkBody('Username', 'Username is required').notEmpty();
   req
@@ -151,27 +149,43 @@ app.post('/users', function(req, res) {
   if (errors) {
     return res.status(422).json({ errors: errors });
   }
-  var hashedPassword = Users.hashPassword(req.body.Password);
-  Users.findOne({
+  var hashedPassword = User.hashPassword(req.body.Password);
+  User.findOne({
     Username: req.body.Username
   })
     .then(function(user) {
       if (user) {
         return res.status(400).send(req.body.Username + 'already exists');
       } else {
-        Users.create({
+        // https://twm.me/correct-way-to-use-mongoose/
+        const user = new User({
           Username: req.body.Username,
           Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday
-        })
-          .then(function(user) {
-            res.status(201).json(user);
-          })
-          .catch(function(error) {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          });
+        });
+
+        user.save((saveErr, savedUser) => {
+          if (saveErr) {
+            console.error(saveErr);
+            res.status(500).send('Error: ' + saveErr);
+          }
+          res.status(201).json(savedUser);
+        });
+
+        // User.create({
+        //   Username: req.body.Username,
+        //   Password: hashedPassword,
+        //   Email: req.body.Email,
+        //   Birthday: req.body.Birthday
+        // })
+        //   .then(function(user) {
+        //     res.status(201).json(user);
+        //   })
+        //   .catch(function(error) {
+        //     console.error(error);
+        //     res.status(500).send('Error: ' + error);
+        //   });
       }
     })
     .catch(function(error) {
