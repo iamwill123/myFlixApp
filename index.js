@@ -12,7 +12,7 @@ const express = require('express'),
   User = Models.User;
 
 // our passport setup
-require('./passport');
+require('./passport.js');
 // app.use(middleware) -> adds middleware to our express app
 app.use(bodyParser.json());
 // https://www.npmjs.com/package/body-parser#bodyparserurlencodedoptions
