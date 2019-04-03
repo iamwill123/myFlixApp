@@ -24,3 +24,7 @@ https://www.opentechguides.com/how-to/article/mongodb/118/mongodb-cheatsheat.htm
 `mongoimport --host Cluster0-shard-0/cluster0-shard-00-00-3rjjl.gcp.mongodb.net:27017,cluster0-shard-00-01-3rjjl.gcp.mongodb.net:27017,cluster0-shard-00-02-3rjjl.gcp.mongodb.net:27017 --ssl --username myFlixDBadmin --password Posty321! --authenticationDatabase admin --db myFlixDB --collection movies --type json --file movies.json`
 
 `mongoimport --host Cluster0-shard-0/cluster0-shard-00-00-3rjjl.gcp.mongodb.net:27017,cluster0-shard-00-01-3rjjl.gcp.mongodb.net:27017,cluster0-shard-00-02-3rjjl.gcp.mongodb.net:27017 --ssl --username myFlixDBadmin --password Posty321! --authenticationDatabase admin --db myFlixDB --collection users --type json --file users.json`
+
+- Package.json add later
+    "parcel": "parcel client/src/index.html",
+    "heroku": "git push heroku master"
