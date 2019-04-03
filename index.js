@@ -49,8 +49,9 @@ mongoose.connect(connection, {
   useNewUrlParser: true
 });
 
-//Returns a JSON object containing data about all movies
-app.get('/movies', passport.authenticate('jwt', { session: false }), function(
+// Returns a JSON object containing data about all movies
+// No auth required
+app.get('/movies', function(
   req,
   res
 ) {
