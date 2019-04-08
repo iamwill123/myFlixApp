@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { MovieCard } from '../movie-card/movie-card';
+import { MovieView } from '../movie-view/movie-view';
 
 let apiEndpoint = 'https://my-flix-db-11209.herokuapp.com';
 class MainView extends Component {
   state = {
-    movies: []
+    movies: [],
+    selectedMovie: null
   };
 
   async componentDidMount() {
@@ -21,10 +24,36 @@ class MainView extends Component {
     }
   }
 
+  onMovieSelect = movie => {
+    console.log(movie);
+    this.setState({
+      selectedMovie: movie
+    });
+  };
+
   render() {
-    const { movies } = this.state;
-    console.log(movies);
-    return <div className="main-view" />;
+    const { movies, selectedMovie } = this.state;
+    if (movies.length === 0) {
+      return <p>Loading...</p>;
+    }
+
+    return (
+      <div className="main-view">
+        {selectedMovie ? (
+          <MovieView movie={selectedMovie} />
+        ) : (
+          movies.map(movie => {
+            return (
+              <MovieCard
+                movie={movie}
+                key={movie._id}
+                onMovieSelect={movie => this.onMovieSelect(movie)}
+              />
+            );
+          })
+        )}
+      </div>
+    );
   }
 }
 
