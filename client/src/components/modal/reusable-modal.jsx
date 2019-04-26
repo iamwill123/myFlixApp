@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 const ReusableModal = props => {
-  console.log(props);
+  console.log('ReusableModal');
   return (
     <Modal
       show={props.show}
@@ -19,7 +19,9 @@ const ReusableModal = props => {
       </Modal.Header>
       <Modal.Body>{props.children}</Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
+        <Button variant="outline-danger" onClick={props.onHide}>
+          Close
+        </Button>
       </Modal.Footer>
     </Modal>
   );
