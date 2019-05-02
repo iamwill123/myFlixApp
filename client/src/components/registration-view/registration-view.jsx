@@ -5,6 +5,16 @@ import Col from 'react-bootstrap/Col';
 
 const RegistrationView = props => {
   console.log('RegistrationView', props);
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(username, password);
+    props.onRegister(username, password);
+  };
+
   return (
     <Form>
       <Form.Row>
@@ -34,7 +44,7 @@ const RegistrationView = props => {
       <Form.Group controlId="formBasicChecboxRegister">
         <Form.Check type="checkbox" label="Sign me up for weekly newsletter" />
       </Form.Group>
-      <Button variant="outline-primary" type="submit">
+      <Button variant="outline-primary" type="submit" onClick={handleSubmit}>
         Register
       </Button>
     </Form>

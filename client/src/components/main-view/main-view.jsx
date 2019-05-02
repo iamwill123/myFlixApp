@@ -49,10 +49,8 @@ class MainView extends Component {
     });
   }
 
-  onRegister(user) {
-    this.setState({
-      user
-    });
+  onRegister(username, password) {
+    console.warn('onRegister', username, password);
   }
 
   onModalClose = component => () => {
