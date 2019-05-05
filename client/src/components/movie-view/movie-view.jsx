@@ -1,27 +1,25 @@
 import React from 'react';
+import Media from 'react-bootstrap/Media';
 
 const MovieView = ({ movie }) => {
   if (!movie) return <p>loading movie...</p>;
   return (
-    <div className="movie-view">
-      <div className="movie-title">
-        <div className="label">Title</div>
-        <div className="value">{movie.Title}</div>
-      </div>
-      <div className="movie-description">
-        <div className="label">Description</div>
-        <div className="value">{movie.Description}</div>
-      </div>
-      <img className="movie-poster" src={movie.ImagePath} />
-      <div className="movie-genre">
-        <div className="label">Genre</div>
-        <div className="value">{movie.Genre.Name}</div>
-      </div>
-      <div className="movie-director">
-        <div className="label">Director</div>
-        <div className="value">{movie.Director.Name}</div>
-      </div>
-    </div>
+    <Media>
+      <img
+        width={64}
+        height={64}
+        className="mr-3"
+        src={movie.ImagePath}
+        alt="Generic placeholder"
+      />
+      <Media.Body>
+        <h5>{movie.Title}</h5>
+        <p>
+          {movie.Description}
+          {/* <p>{movie.Director.Name}</p> <p>{movie.Genre.Name}</p> */}
+        </p>
+      </Media.Body>
+    </Media>
   );
 };
 

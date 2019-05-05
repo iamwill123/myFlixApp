@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import { LoginModal } from '../login-view/login-modal';
 import { RegistrationModal } from '../registration-view/registration-modal';
+import CardColumns from 'react-bootstrap/CardColumns';
 
 let apiEndpoint = 'https://my-flix-db-11209.herokuapp.com';
 
@@ -99,19 +100,21 @@ class MainView extends Component {
           </Row>
           <Row>
             <Col>
-              {selectedMovie ? (
-                <MovieView movie={selectedMovie} />
-              ) : (
-                movies.map(movie => {
-                  return (
-                    <MovieCard
-                      movie={movie}
-                      key={movie._id}
-                      onMovieSelect={movie => this.onMovieSelect(movie)}
-                    />
-                  );
-                })
-              )}
+              <CardColumns>
+                {selectedMovie ? (
+                  <MovieView movie={selectedMovie} />
+                ) : (
+                  movies.map(movie => {
+                    return (
+                      <MovieCard
+                        movie={movie}
+                        key={movie._id}
+                        onMovieSelect={movie => this.onMovieSelect(movie)}
+                      />
+                    );
+                  })
+                )}
+              </CardColumns>
             </Col>
           </Row>
           <Row>
