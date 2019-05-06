@@ -15,7 +15,7 @@ const express = require('express'),
 require('./passport.js');
 
 // CORS setup
-let allowedOrigins = ['http://localhost:1234', 'http://localhost:3000'];
+let allowedOrigins = ['http://localhost:1234/', 'http://localhost:3000/'];
 const configs = {
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
