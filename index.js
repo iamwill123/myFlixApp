@@ -13,14 +13,6 @@ const express = require('express'),
 
 // our passport setup
 require('./passport.js');
-// app.use(middleware) -> adds middleware to our express app
-app.use(bodyParser.json());
-// https://www.npmjs.com/package/body-parser#bodyparserurlencodedoptions
-app.use(bodyParser.urlencoded({ extended: true }));
-// Logs every request info to terminal
-app.use(morgan('common'));
-// Server-Side Validation
-app.use(validator());
 
 // CORS setup
 let allowedOrigins = ['http://localhost:1234', 'http://localhost:3000'];
@@ -38,6 +30,15 @@ const configs = {
 };
 app.use(cors(configs));
 
+// app.use(middleware) -> adds middleware to our express app
+app.use(bodyParser.json());
+// https://www.npmjs.com/package/body-parser#bodyparserurlencodedoptions
+app.use(bodyParser.urlencoded({ extended: true }));
+// Logs every request info to terminal
+app.use(morgan('common'));
+// Server-Side Validation
+app.use(validator());
+
 // allows Mongoose to connect to the database thus integrating it with the REST API
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', {
 //   useNewUrlParser: true
@@ -51,10 +52,7 @@ mongoose.connect(connection, {
 
 // Returns a JSON object containing data about all movies
 // No auth required
-app.get('/movies', function(
-  req,
-  res
-) {
+app.get('/movies', function(req, res) {
   Movies.find()
     .then(function(movies) {
       console.log(movies.length);
