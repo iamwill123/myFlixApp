@@ -4,7 +4,6 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose'),
   Models = require('./models.js'),
-  auth = require('./auth')(app),
   passport = require('passport'),
   cors = require('cors'),
   validator = require('express-validator'),
@@ -30,6 +29,8 @@ const configs = {
 };
 app.use(cors(configs));
 
+// our login route
+const auth = require('./auth')(app);
 // app.use(middleware) -> adds middleware to our express app
 app.use(bodyParser.json());
 // https://www.npmjs.com/package/body-parser#bodyparserurlencodedoptions
