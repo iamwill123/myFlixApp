@@ -10,9 +10,6 @@ const express = require('express'),
   Movies = Models.Movie,
   User = Models.User;
 
-// our passport setup
-require('./passport.js');
-
 // CORS setup
 let allowedOrigins = ['http://localhost:1234', 'http://localhost:3000'];
 const configs = {
@@ -31,6 +28,8 @@ app.use(cors(configs));
 
 // our login route
 const auth = require('./auth')(app);
+// our passport setup
+require('./passport.js');
 // app.use(middleware) -> adds middleware to our express app
 app.use(bodyParser.json());
 // https://www.npmjs.com/package/body-parser#bodyparserurlencodedoptions
