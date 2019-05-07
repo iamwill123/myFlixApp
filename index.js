@@ -52,30 +52,34 @@ mongoose.connect(connection, {
 
 // Returns a JSON object containing data about all movies
 // No auth required
-app.get('/movies', function(req, res) {
-  Movies.find()
-    .then(function(movies) {
-      console.log(movies.length);
-      res.status(201).json(movies);
-    })
-    .catch(function(err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
+app.get(
+  '/movies',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Movies.find()
+      .then(movies => {
+        console.log(movies.length);
+        res.status(201).json(movies);
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
+);
 
 // Returns data about a single movie by title
 app.get(
   '/movies/:Title',
   passport.authenticate('jwt', { session: false }),
-  function(req, res) {
+  (req, res) => {
     Movies.findOne({
       Title: req.params.Title
     })
-      .then(function(movie) {
+      .then(movie => {
         res.json(movie);
       })
-      .catch(function(err) {
+      .catch(err => {
         console.error(err);
         res.status(500).send('Error: ' + err);
       });
@@ -86,11 +90,11 @@ app.get(
 app.get(
   '/movies/:Title/Genre',
   passport.authenticate('jwt', { session: false }),
-  function(req, res) {
+  (req, res) => {
     Movies.findOne({
       Title: req.params.Title
     })
-      .then(function(movie) {
+      .then(movie => {
         if (movie) {
           res
             .status(201)
@@ -103,7 +107,7 @@ app.get(
             );
         }
       })
-      .catch(function(err) {
+      .catch(err => {
         console.error(err);
         res.status(500).send('Error: ' + err);
       });
@@ -114,14 +118,14 @@ app.get(
 app.get(
   '/directors/:Name',
   passport.authenticate('jwt', { session: false }),
-  function(req, res) {
+  (req, res) => {
     Movies.findOne({
       'Director.Name': req.params.Name
     })
-      .then(function(director) {
+      .then(director => {
         res.json(director);
       })
-      .catch(function(err) {
+      .catch(err => {
         console.error(err);
         res.status(500).send('Error: ' + err);
       });
@@ -129,7 +133,7 @@ app.get(
 );
 
 // Allows new user to register
-app.post('/user', function(req, res) {
+app.post('/user', (req, res) => {
   // Validation logic here for request
   req.checkBody('Username', 'Username is required').notEmpty();
   req
@@ -152,7 +156,7 @@ app.post('/user', function(req, res) {
   User.findOne({
     Username: req.body.Username
   })
-    .then(function(user) {
+    .then(user => {
       if (user) {
         return res.status(400).send(req.body.Username + 'already exists');
       } else {
@@ -178,41 +182,42 @@ app.post('/user', function(req, res) {
           Email: req.body.Email,
           Birthday: req.body.Birthday
         })
-          .then(function(user) {
+          .then(user => {
             res.status(201).json(user);
           })
-          .catch(function(error) {
+          .catch(error => {
             console.error(error);
             res.status(500).send('Error: ' + error);
           });
       }
     })
-    .catch(function(error) {
+    .catch(error => {
       console.error(error);
       res.status(500).send('Error: ' + error);
     });
 });
 
 //list of all users for test needs
-app.get('/user', passport.authenticate('jwt', { session: false }), function(
-  req,
-  res
-) {
-  User.find()
-    .then(function(users) {
-      res.status(201).json(users);
-    })
-    .catch(function(err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
+app.get(
+  '/user',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    User.find()
+      .then(users => {
+        res.status(201).json(users);
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
+);
 
 //Allows to update user info, :Username is case sensitive
 app.put(
   '/user/:Username',
   passport.authenticate('jwt', { session: false }),
-  function(req, res) {
+  (req, res) => {
     User.update(
       {
         Username: req.params.Username
@@ -228,7 +233,7 @@ app.put(
       {
         new: true
       }, // This line makes sure that the updated document is returned
-      function(err, updatedUser) {
+      (err, updatedUser) => {
         if (err) {
           console.error(err);
           res.status(500).send('Error: ' + err);
@@ -244,7 +249,7 @@ app.put(
 app.post(
   '/user/:Username/FavoriteMovies/:MovieID',
   passport.authenticate('jwt', { session: false }),
-  function(req, res) {
+  (req, res) => {
     const { Username, MovieID } = req.params;
     User.findOneAndUpdate(
       {
@@ -258,7 +263,7 @@ app.post(
       {
         new: true
       }, // This line makes sure that the updated document is returned
-      function(err, updatedUser) {
+      (err, updatedUser) => {
         if (err) {
           console.error(err);
           res.status(500).send('Error: ' + err);
@@ -275,7 +280,7 @@ app.post(
 app.delete(
   '/user/:Username/FavoriteMovies/:MovieID',
   passport.authenticate('jwt', { session: false }),
-  function(req, res) {
+  (req, res) => {
     const { Username, MovieID } = req.params;
     console.log(Username, MovieID);
     User.findOneAndUpdate(
@@ -291,7 +296,7 @@ app.delete(
       {
         new: true
       }, // This line makes sure that the updated document is returned
-      function(err, updatedUser) {
+      (err, updatedUser) => {
         if (err) {
           console.error(err);
           res.status(500).send('Error: ' + err);
@@ -307,18 +312,18 @@ app.delete(
 app.delete(
   '/user/:Username',
   passport.authenticate('jwt', { session: false }),
-  function(req, res) {
+  (req, res) => {
     User.findOneAndRemove({
       Username: req.params.Username
     })
-      .then(function(user) {
+      .then(user => {
         if (!user) {
           res.status(400).send(req.params.Username + ' was not found');
         } else {
           res.status(200).send(req.params.Username + ' was deleted.');
         }
       })
-      .catch(function(err) {
+      .catch(err => {
         console.error(err);
         res.status(500).send('Error: ' + err);
       });
@@ -326,20 +331,20 @@ app.delete(
 );
 
 // default response when request hits the root folder
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.send('Welcome to myFlixDB!');
 });
 
 //access requested file from "public" folder
 app.use(express.static('public'));
 
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Oops! Something went wrong... please retry!');
 });
 
 var port = process.env.PORT || 3000;
-app.listen(port, '0.0.0.0', function() {
+app.listen(port, '0.0.0.0', () => {
   console.log(
     `Server listening on ${port === 3000 ? 'http://localhost:3000' : port}`
   );
