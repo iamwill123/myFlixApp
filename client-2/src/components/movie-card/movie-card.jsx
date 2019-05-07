@@ -6,12 +6,15 @@ import { Link } from 'react-router-dom';
 
 const MovieCard = ({ movie }) => {
   return (
-    <Card>
+    <Card border="info">
+      <Card.Header as="h5">{movie.Title}</Card.Header>
       <Card.Body>
-        <Card.Title>{movie.Title}</Card.Title>
+        <Link to={`/directors/${movie.Director.Name}`}>
+          <Card.Text style={{marginBottom: '5%'}}>{movie.Director.Name}</Card.Text>
+        </Link>
         <Card.Text>{movie.Description}</Card.Text>
         <Link to={`/movies/${movie._id}`}>
-          <Button variant="link">View</Button>
+          <Button variant="outline-dark">Read more</Button>
         </Link>
         <Card.Text>
           {/* <small className="text-muted">Last updated 3 mins ago</small> */}
@@ -24,7 +27,7 @@ const MovieCard = ({ movie }) => {
 
 MovieCard.propTypes = {
   movie: PropTypes.shape({
-    title: PropTypes.string
+    Title: PropTypes.string
   }).isRequired
 };
 export { MovieCard };

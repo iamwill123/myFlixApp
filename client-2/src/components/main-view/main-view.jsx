@@ -13,6 +13,8 @@ import CardColumns from 'react-bootstrap/CardColumns';
 import { movieApi } from '../../helpers/movieAPI';
 import { isEmpty } from '../../helpers/isEmpty';
 import './main-view.scss';
+import { WelcomeView } from '../welcome-view/welcome-view';
+import { DirectorView } from '../director-view/director-view';
 
 class MainView extends Component {
   state = {
@@ -112,12 +114,6 @@ class MainView extends Component {
       );
     }
 
-    if (isEmpty(movies)) {
-      return <p>Loading...</p>;
-    }
-    //
-    //   <MovieView movie={selectedMovie} />
-    //
     let movieCards = (
       <Row>
         <Col>
@@ -134,14 +130,52 @@ class MainView extends Component {
       <Router>
         <div className="main-view">
           <Container>
-            <Route exact path="/movies/" render={() => movieCards} />
+            <Route exact path="/" render={() => <WelcomeView />} />
+            <Route
+              exact
+              path="/movies"
+              render={() =>
+                isEmpty(movies) ? (
+                  <div className="loading-view">
+                    <p>Loading movies...</p>
+                  </div>
+                ) : (
+                  movieCards
+                )
+              }
+            />
+
             <Route
               path="/movies/:movieId"
-              render={({ match }) => (
-                <MovieView
-                  movie={movies.find(m => m._id === match.params.movieId)}
-                />
-              )}
+              render={({ match }) =>
+                isEmpty(movies) ? (
+                  <div className="loading-view">
+                    <p>Loading the movie...</p>
+                  </div>
+                ) : (
+                  <MovieView
+                    movie={movies.find(m => m._id === match.params.movieId)}
+                  />
+                )
+              }
+            />
+            <Route
+              path="/directors/:name"
+              render={({ match }) => {
+                if (!movies || !movies.length)
+                  return (
+                    <div className="loading-view">
+                      <p>Loading the director...</p>
+                    </div>
+                  );
+                return (
+                  <DirectorView
+                    movie={movies.find(
+                      m => m.Director.Name === match.params.name
+                    )}
+                  />
+                );
+              }}
             />
             <Row>
               <Col>The footer</Col>
