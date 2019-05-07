@@ -1,4 +1,5 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
@@ -55,12 +56,6 @@ class MainView extends Component {
     }
   }
 
-  onMovieSelect = movie => {
-    this.setState({
-      selectedMovie: movie
-    });
-  };
-
   onLoggedIn(authData) {
     console.warn('authData', authData);
     this.setState({
@@ -87,7 +82,7 @@ class MainView extends Component {
   };
 
   render() {
-    const { movies, selectedMovie, user, modalShow } = this.state;
+    const { movies, user, modalShow } = this.state;
 
     if (isEmpty(user)) {
       return (
@@ -120,34 +115,40 @@ class MainView extends Component {
     if (isEmpty(movies)) {
       return <p>Loading...</p>;
     }
+    //
+    //   <MovieView movie={selectedMovie} />
+    //
+    let movieCards = (
+      <Row>
+        <Col>
+          <CardColumns>
+            {movies.map(movie => {
+              return <MovieCard movie={movie} key={movie._id} />;
+            })}
+          </CardColumns>
+        </Col>
+      </Row>
+    );
 
     return (
-      <div className="main-view">
-        <Container>
-          <Row>
-            <Col>
-              <CardColumns>
-                {selectedMovie ? (
-                  <MovieView movie={selectedMovie} />
-                ) : (
-                  movies.map(movie => {
-                    return (
-                      <MovieCard
-                        movie={movie}
-                        key={movie._id}
-                        onMovieSelect={movie => this.onMovieSelect(movie)}
-                      />
-                    );
-                  })
-                )}
-              </CardColumns>
-            </Col>
-          </Row>
-          <Row>
-            <Col>The footer</Col>
-          </Row>
-        </Container>
-      </div>
+      <Router>
+        <div className="main-view">
+          <Container>
+            <Route exact path="/movies/" render={() => movieCards} />
+            <Route
+              path="/movies/:movieId"
+              render={({ match }) => (
+                <MovieView
+                  movie={movies.find(m => m._id === match.params.movieId)}
+                />
+              )}
+            />
+            <Row>
+              <Col>The footer</Col>
+            </Row>
+          </Container>
+        </div>
+      </Router>
     );
   }
 }
