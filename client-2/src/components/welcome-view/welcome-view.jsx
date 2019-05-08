@@ -6,6 +6,7 @@ import { RegistrationModal } from '../registration-view/registration-modal';
 import { LoginModal } from '../login-view/login-modal';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import { isEmpty } from '../../helpers/isEmpty';
+import PropTypes from 'prop-types';
 
 const WelcomeView = ({
   user,
@@ -31,7 +32,7 @@ const WelcomeView = ({
             onModalClose={onModalClose('login')}
             onLoggedIn={user => onLoggedIn(user)}
           />
-
+          <div className="mr-2" />
           <RegistrationModal
             onModalShow={onModalShow('register')}
             modalShow={modalShow.register}
@@ -46,6 +47,15 @@ const WelcomeView = ({
       )}
     </Jumbotron>
   );
+};
+
+WelcomeView.propTypes = {
+  user: PropTypes.any,
+  modalShow: PropTypes.object.isRequired,
+  onModalClose: PropTypes.func.isRequired,
+  onModalShow: PropTypes.func.isRequired,
+  onRegister: PropTypes.func.isRequired,
+  onLoggedIn: PropTypes.func.isRequired
 };
 
 export { WelcomeView };

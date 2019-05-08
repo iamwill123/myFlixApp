@@ -68,7 +68,9 @@ class MainView extends Component {
 
   onRegister = (username, password) => {
     console.warn('onRegister', username, password);
+    setTimeout(this.onModalClose('register'), 0);
     this.onModalShow('login');
+    console.log(this);
   };
 
   onModalClose = component => () => {

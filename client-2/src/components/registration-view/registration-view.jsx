@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { movieApi } from '../../helpers/movieAPI';
+import AlertView from '../alert-view/alert-view';
 
 const RegistrationView = props => {
   // console.log('RegistrationView', props);
@@ -12,7 +13,11 @@ const RegistrationView = props => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [validate, setValidation] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
+  // Why 2 register users?
+  // https://cloud.mongodb.com/v2/5b8b61c4c0c6e3634ef54c30#metrics/replicaSet/5c953208fd4cbae9c7c4f9aa/explorer/myFlixDB/users/find
   const handleSubmit = e => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -31,12 +36,17 @@ const RegistrationView = props => {
       .then(response => {
         const data = response.data;
         console.log(data);
-        // window.open('/');
+        setSuccess(
+          `🎉 Hey ${data.Username}, you registered successfully, please login!`
+        );
+        setTimeout(props.onRegister(data.Username), 2000);
       })
       .catch(e => {
+        if (e.message.includes('422')) {
+          setError('Error registering, please check all fields.');
+        }
         console.log(e, 'error registering the user');
       });
-    props.onRegister(username, password);
   };
 
   return (
@@ -108,22 +118,34 @@ const RegistrationView = props => {
           Please confirm password.
         </Form.Control.Feedback>
         {password !== confirmPassword && (
-          <Form.Control.Feedback type="invalid">
-            confirm password and password don't match.
-          </Form.Control.Feedback>
+          <AlertView variant="warning">
+            Confirm password and password do not match.
+          </AlertView>
         )}
       </Form.Group>
-      <Form.Group controlId="formBasicChecboxRegister">
+      {/* <Form.Group controlId="formBasicChecboxRegister">
         <Form.Check type="checkbox" label="Sign me up for weekly newsletter" />
-      </Form.Group>
+      </Form.Group> */}
 
       <Button
-        variant="outline-primary"
+        variant={
+          !username || !email || !password
+            ? 'outline-secondary'
+            : 'outline-primary'
+        }
         type="submit"
-        disabled={!username || !email || !password ? true : false}
+        disabled={
+          !username ||
+          !email ||
+          !password.includes(confirmPassword) ||
+          password !== confirmPassword ||
+          success
+        }
       >
         Register
       </Button>
+      {error && <AlertView variant="danger">{error}</AlertView>}
+      {success && <AlertView variant="success">{success}</AlertView>}
     </Form>
   );
 };

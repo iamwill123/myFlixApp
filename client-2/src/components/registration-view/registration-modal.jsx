@@ -7,7 +7,7 @@ const RegistrationModal = props => {
   // console.log('RegistrationModal', props);
   return (
     <>
-      <Button variant="outline-secondary" onClick={props.onModalShow}>
+      <Button variant="outline-dark" onClick={props.onModalShow}>
         Register
       </Button>
       <ReusableModal
