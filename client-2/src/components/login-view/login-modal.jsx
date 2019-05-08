@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { ReusableModal } from '../modal/reusable-modal';
 import { LoginView } from './login-view';
 
 const LoginModal = props => {
-  console.log('LoginModal', props);
+  // console.log('LoginModal', props);
   return (
     <>
       <Button variant="outline-primary" onClick={props.onModalShow}>

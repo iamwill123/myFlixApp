@@ -4,15 +4,14 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 // import { Link } from 'react-router-dom';
 
-const DirectorView = ({ movie }) => {
-  const { Director } = movie;
+const GenreView = ({ movie }) => {
+  const { Genre } = movie;
   return (
     <Card>
-      <Card.Header as="h5">Director</Card.Header>
+      <Card.Header as="h5">Genre</Card.Header>
       <Card.Body>
-        <Card.Title>{Director.Name}</Card.Title>
-        <Card.Text>{Director.Bio}</Card.Text>
-        <Card.Text>{Director.Birth}</Card.Text>
+        <Card.Title>{Genre.Name}</Card.Title>
+        <Card.Text>{Genre.Description}</Card.Text>
         <Button variant="primary">Go somewhere</Button>
       </Card.Body>
       <Card.Footer className="text-muted">2 days ago</Card.Footer>
@@ -20,9 +19,9 @@ const DirectorView = ({ movie }) => {
   );
 };
 
-DirectorView.propTypes = {
+GenreView.propTypes = {
   movie: PropTypes.shape({
-    Director: PropTypes.object
+    Genre: PropTypes.object
   }).isRequired
 };
-export { DirectorView };
+export { GenreView };

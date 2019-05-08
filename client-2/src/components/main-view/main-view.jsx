@@ -12,6 +12,7 @@ import { isEmpty } from '../../helpers/isEmpty';
 import './main-view.scss';
 import { WelcomeView } from '../welcome-view/welcome-view';
 import { DirectorView } from '../director-view/director-view';
+import { GenreView } from '../genre-view/genre-view';
 
 class MainView extends Component {
   state = {
@@ -67,6 +68,7 @@ class MainView extends Component {
 
   onRegister = (username, password) => {
     console.warn('onRegister', username, password);
+    this.onModalShow('login');
   };
 
   onModalClose = component => () => {
@@ -143,7 +145,7 @@ class MainView extends Component {
             <Route
               path="/directors/:name"
               render={({ match }) => {
-                if (!movies || !movies.length)
+                if (isEmpty(movies))
                   return (
                     <div className="loading-view">
                       <p>Loading the director...</p>
@@ -154,6 +156,23 @@ class MainView extends Component {
                     movie={movies.find(
                       m => m.Director.Name === match.params.name
                     )}
+                  />
+                );
+              }}
+            />
+            <Route
+              exact
+              path="/genres/:name"
+              render={({ match }) => {
+                if (isEmpty(movies))
+                  return (
+                    <div className="loading-view">
+                      <p>Loading the genres...</p>
+                    </div>
+                  );
+                return (
+                  <GenreView
+                    movie={movies.find(m => m.Genre.Name === match.params.name)}
                   />
                 );
               }}

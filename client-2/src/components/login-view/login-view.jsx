@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { movieApi } from '../../helpers/movieAPI';
-console.log(movieApi['login']);
+
 const LoginView = props => {
   // console.log('LoginView', props);
   const [username, setUsername] = useState('');
