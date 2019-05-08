@@ -6,9 +6,6 @@ import { MovieView } from '../movie-view/movie-view';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import { LoginModal } from '../login-view/login-modal';
-import { RegistrationModal } from '../registration-view/registration-modal';
 import CardColumns from 'react-bootstrap/CardColumns';
 import { movieApi } from '../../helpers/movieAPI';
 import { isEmpty } from '../../helpers/isEmpty';
@@ -58,7 +55,7 @@ class MainView extends Component {
     }
   }
 
-  onLoggedIn(authData) {
+  onLoggedIn = authData => {
     console.warn('authData', authData);
     this.setState({
       user: authData.user.Username
@@ -66,11 +63,11 @@ class MainView extends Component {
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
     this.getMovies(authData.token);
-  }
+  };
 
-  onRegister(username, password) {
+  onRegister = (username, password) => {
     console.warn('onRegister', username, password);
-  }
+  };
 
   onModalClose = component => () => {
     component === 'login' && this.setState({ modalShow: { login: false } });
@@ -85,35 +82,6 @@ class MainView extends Component {
 
   render() {
     const { movies, user, modalShow } = this.state;
-
-    if (isEmpty(user)) {
-      return (
-        <div className="main-view">
-          <Container>
-            <Row>
-              <Col>
-                <ButtonToolbar>
-                  <LoginModal
-                    onModalShow={this.onModalShow('login')}
-                    modalShow={modalShow.login}
-                    onModalClose={this.onModalClose('login')}
-                    onLoggedIn={user => this.onLoggedIn(user)}
-                  />
-
-                  <RegistrationModal
-                    onModalShow={this.onModalShow('register')}
-                    modalShow={modalShow.register}
-                    onModalClose={this.onModalClose('register')}
-                    onRegister={user => this.onRegister(user)}
-                  />
-                </ButtonToolbar>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-      );
-    }
-
     let movieCards = (
       <Row>
         <Col>
@@ -130,7 +98,20 @@ class MainView extends Component {
       <Router>
         <div className="main-view">
           <Container>
-            <Route exact path="/" render={() => <WelcomeView />} />
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <WelcomeView
+                  user={user}
+                  modalShow={modalShow}
+                  onModalClose={this.onModalClose}
+                  onModalShow={this.onModalShow}
+                  onRegister={this.onRegister}
+                  onLoggedIn={this.onLoggedIn}
+                />
+              )}
+            />
             <Route
               exact
               path="/movies"
