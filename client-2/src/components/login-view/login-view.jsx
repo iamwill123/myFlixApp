@@ -22,11 +22,9 @@ const LoginView = props => {
     }
     setValidation(true);
     axios
-      .post(movieApi['login'], null, {
-        params: {
-          Username: username,
-          Password: password
-        }
+      .post(movieApi['login'], {
+        Username: username,
+        Password: password
       })
       .then(response => {
         const data = response.data;

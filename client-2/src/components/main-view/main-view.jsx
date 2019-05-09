@@ -4,6 +4,7 @@ import axios from 'axios';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CardColumns from 'react-bootstrap/CardColumns';
@@ -45,7 +46,7 @@ class MainView extends Component {
         headers: { Authorization: `Bearer ${token}` }
       });
       const { status, data } = getMovies; // returns an array of movies
-      console.warn(data);
+      // console.warn(data);
       if (status === 201) {
         this.setState({
           movies: data
@@ -57,7 +58,7 @@ class MainView extends Component {
   }
 
   onLoggedIn = authData => {
-    console.warn('authData', authData);
+    // console.warn('authData', authData);
     this.setState({
       user: authData.user.Username
     });
@@ -66,11 +67,17 @@ class MainView extends Component {
     this.getMovies(authData.token);
   };
 
-  onRegister = (username, password) => {
-    console.warn('onRegister', username, password);
+  onRegister = username => {
+    // console.warn('onRegister', username);
     setTimeout(this.onModalClose('register'), 0);
-    this.onModalShow('login');
-    console.log(this);
+    setTimeout(this.onModalShow('login'), 0);
+  };
+
+  onLoggedOut = () => {
+    // temp logout method
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setTimeout((window.location.href = '/'), 0);
   };
 
   onModalClose = component => () => {
@@ -102,6 +109,19 @@ class MainView extends Component {
       <Router>
         <div className="main-view">
           <Container>
+            {!isEmpty(user) && (
+              <Row>
+                <Col>
+                  <Button
+                    variant="outline-secondary"
+                    onClick={this.onLoggedOut}
+                    className="float-right mb-2"
+                  >
+                    Logout
+                  </Button>
+                </Col>
+              </Row>
+            )}
             <Route
               exact
               path="/"
@@ -180,6 +200,7 @@ class MainView extends Component {
               }}
             />
             <Row>
+              <hr />
               <Col>The footer</Col>
             </Row>
           </Container>

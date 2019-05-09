@@ -20,8 +20,18 @@ const WelcomeView = ({
     <Jumbotron>
       <h1>Welcome to movie.db</h1>
       <p>
-        Mollit irure irure ipsum voluptate. Consectetur pariatur incididunt
-        velit consectetur.
+        Hack up furballs rub butt on table stretch, and lick butt. Go into a
+        room to decide you didn't want to be in there anyway put butt in owner's
+        face mesmerizing birds. Hiding behind the couch until lured out by a
+        feathery toy meowing non stop for food. Scratch the box annoy the old
+        grumpy cat, start a fight and then retreat to wash when i lose but nya
+        nya nyan but get scared by sudden appearance of cucumber rub face on
+        everything, so purr when being pet. Sweet beast. Stare at wall turn and
+        meow stare at wall some more meow again continue staring . Sniff other
+        cat's butt and hang jaw half open thereafter go into a room to decide
+        you didn't want to be in there anyway but meow meow mama. Dream about
+        hunting birds meowwww, but stand with legs in litter box, but poop
+        outside.
       </p>
 
       {isEmpty(user) ? (

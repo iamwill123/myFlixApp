@@ -27,6 +27,6 @@ https://www.opentechguides.com/how-to/article/mongodb/118/mongodb-cheatsheat.htm
 - Package.json add later
 - for parcel to work with async/await: https://github.com/parcel-bundler/parcel/issues/1762
 
-- Class property proposal, so oyu dont have to write out the contructor: https://hackernoon.com/the-constructor-is-dead-long-live-the-constructor-c10871bea599
+- Class property proposal, so you dont have to write out the constructor: https://hackernoon.com/the-constructor-is-dead-long-live-the-constructor-c10871bea599
 
 - MongoDB atlas: https://cloud.mongodb.com/v2/5b8b61c4c0c6e3634ef54c30#clusters

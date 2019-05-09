@@ -6,6 +6,11 @@ import Button from 'react-bootstrap/Button';
 
 const DirectorView = ({ movie }) => {
   const { Director } = movie;
+
+  const goBack = () => {
+    window.history.back();
+  };
+
   return (
     <Card>
       <Card.Header as="h5">Director</Card.Header>
@@ -13,7 +18,9 @@ const DirectorView = ({ movie }) => {
         <Card.Title>{Director.Name}</Card.Title>
         <Card.Text>{Director.Bio}</Card.Text>
         <Card.Text>{Director.Birth}</Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <Button variant="outline-dark" onClick={goBack}>
+          Back
+        </Button>
       </Card.Body>
       <Card.Footer className="text-muted">2 days ago</Card.Footer>
     </Card>

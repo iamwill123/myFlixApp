@@ -15,7 +15,10 @@ const RegistrationModal = props => {
         onHide={props.onModalClose}
         heading="Registration"
       >
-        <RegistrationView onRegister={props.onRegister} />
+        <RegistrationView
+          onRegister={props.onRegister}
+          onHide={props.onModalClose}
+        />
       </ReusableModal>
     </>
   );

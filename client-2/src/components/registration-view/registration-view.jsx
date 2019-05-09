@@ -35,18 +35,20 @@ const RegistrationView = props => {
       })
       .then(response => {
         const data = response.data;
-        console.log(data);
         setSuccess(
           `🎉 Hey ${data.Username}, you registered successfully, please login!`
         );
-        setTimeout(props.onRegister(data.Username), 2000);
+        setTimeout(() => props.onRegister(username), 5000);
       })
       .catch(e => {
         if (e.message.includes('422')) {
           setError('Error registering, please check all fields.');
+        } else {
+          setError('Oops, error registering, please try again later.');
         }
         console.log(e, 'error registering the user');
       });
+    // .finally(() => setTimeout(() => props.onHide(), 5000));
   };
 
   return (

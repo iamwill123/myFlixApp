@@ -6,14 +6,20 @@ import Button from 'react-bootstrap/Button';
 
 const GenreView = ({ movie }) => {
   const { Genre } = movie;
+  const goBack = () => {
+    window.history.back();
+  };
   return (
     <Card>
       <Card.Header as="h5">Genre</Card.Header>
       <Card.Body>
         <Card.Title>{Genre.Name}</Card.Title>
         <Card.Text>{Genre.Description}</Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <Button variant="outline-dark" onClick={goBack}>
+          Back
+        </Button>
       </Card.Body>
+
       <Card.Footer className="text-muted">2 days ago</Card.Footer>
     </Card>
   );
