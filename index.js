@@ -25,9 +25,6 @@ const configs = {
   }
 };
 app.use(cors(configs));
-
-// our login route
-const auth = require('./auth')(app);
 // our passport setup
 require('./passport.js');
 // app.use(middleware) -> adds middleware to our express app
@@ -38,6 +35,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('common'));
 // Server-Side Validation
 app.use(validator());
+
+// our login route
+const auth = require('./auth')(app);
 
 // allows Mongoose to connect to the database thus integrating it with the REST API
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', {
