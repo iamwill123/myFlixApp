@@ -1,158 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Documentation - myFlixApp</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>myFlixApp</h1>
     <h2>Introduction</h2>
     <p>
-        myFlixApp is a movie web application that provides users with access to information about different movies,
-        directors, and genres.
-        Users are able to sign up, update their personal information, and create a list of their favorite movies.
-        <br>
-        For that purpose a REST API was created that interacts with a movie database.
+      myFlixApp is a movie web application that provides users with access to
+      information about different movies, directors, and genres. Users are able
+      to sign up, update their personal information, and create a list of their
+      favorite movies.
+      <br />
+      For that purpose a REST API was created that interacts with a movie
+      database.
     </p>
-    <table>
-        <thead>
-            <tr>
-                <th>REQUEST</th>
-                <th>URL</th>
-                <th>HTTP METHOD</th>
-                <th>REQUEST BODY DATA FORMAT</th>
-                <th>RESPONSE BODY DATA FORMAT</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Get a list of all movies</td>
-                <td>/movies</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>JSON object holding data about all movies.</td>
-            </tr>
-            <tr>
-                <td>Get a single movie by title</td>
-                <td>
-                    /movies/:title<br>
-                    <br>
-                    Example:
-                    <p class='example'>/movies/Pulp%20Fiction</p>
-                </td>
-                <td>GET</td>
-                <td>None</td>
-                <td>
-                    JSON object holding data about a single movie containing a title, description, genre, director and
-                    image URL.
-                    <p class='example'>
-                        {<br>
-                        title: 'Pulp Fiction', <br>
-                        description: 'Pulp Fiction is a 1994 American crime film',<br>
-                        genre: 'Drama/Crime',<br>
-                        director: 'Quentin Tarantino',<br>
-                        imageURL: '#'<br>
-                        }
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td>Get a genre by movie title</td>
-                <td>/movies/:title/genre</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A text message with the genre of requested movie, like:
-                    <p class='example'>
-                        The genre of Pulp Fiction is Drama/Crime
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td>Get data about a director by name</td>
-                <td>/directors/:name</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>JSON object holding data about a director, including his bio, birth year, death year.</td>
-            </tr>
-            <tr>
-                <td>Allow new users to register</td>
-                <td>/users</td>
-                <td>POST</td>
-                <td>A JSON object holding data about the user to add, structured like:
-                    <p class='example'>
-                        {<br>
-                        username: 'MikeStar', <br>
-                        email: 'user@mail.com',<br>
-                        password: '123movie',<br>
-                        dateOfBirth: '01/01/1970',<br>
-                        favorites: []<br>
-                        }
-                    </p>
-                </td>
-                <td>A JSON object holding data about the user that was added.</td>
-            </tr>
-            <tr>
-                <td>Update user log in information</td>
-                <td>/users/:username/:password</td>
-                <td>PUT</td>
-                <td>None</td>
-                <td>A text message indicating whether the user's username/password was successfully updated</td>
-            </tr>
-            <tr>
-                <td>Update user personal information</td>
-                <td>/users/:username/:email/:dateofbirth</td>
-                <td>PUT</td>
-                <td>None</td>
-                <td>A text message indicating whether the user's personal data was successfully updated</td>
-            </tr>
-            <tr>
-                <td>Add a movie to the user's list of favorites</td>
-                <td>/users/:username/:favorites</td>
-                <td>POST</td>
-                <td>A JSON object holding data about the user to add, structured like:
-                    <p class='example'>
-                        {<br>
-                        title: 'Pulp Fiction', <br>
-                        description: 'Pulp Fiction is a 1994 American crime film',<br>
-                        genre: 'Drama/Crime',<br>
-                        director: 'Quentin Tarantino',<br>
-                        imageURL: '#'<br>
-                        }
-                    </p>
-                </td>
-                <td>A JSON object holding data about the user that was added, including a unique ID:
-                    <p class='example'>
-                        {<br>
-                        id: '1', <br>
-                        title: 'Pulp Fiction', <br>
-                        description: 'Pulp Fiction is a 1994 American crime film',<br>
-                        genre: 'Drama/Crime',<br>
-                        director: 'Quentin Tarantino',<br>
-                        imageURL: '#'<br>
-                        }
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td>Remove a movie from user's favorites</td>
-                <td>/users/:username/:favorites</td>
-                <td>DELETE</td>
-                <td>None</td>
-                <td>A text message indicating whether the movie was successfully removed from user's favorites.</td>
-            </tr>
-            <tr>
-                <td>Deregister existing user</td>
-                <td>/users/:username</td>
-                <td>DELETE</td>
-                <td>None</td>
-                <td>A text message indicating whether the user was successfully deregistered.</td>
-            </tr>
-        </tbody>
-    </table>
-</body>
-
+  </body>
 </html>
