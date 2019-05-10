@@ -28,15 +28,19 @@ class MainView extends Component {
 
   async componentDidMount() {
     try {
-      let accessToken = localStorage.getItem('token');
+      let accessToken = await localStorage.getItem('token');
       if (accessToken !== null) {
-        this.setState({
-          user: localStorage.getItem('user')
-        });
-        this.getMovies(accessToken);
+        this.setState(
+          {
+            user: localStorage.getItem('user')
+          },
+          () => {
+            this.getMovies(accessToken);
+          }
+        );
       }
     } catch (error) {
-      console.log(error);
+      console.log('componentDidMount', error);
     }
   }
 
@@ -53,18 +57,22 @@ class MainView extends Component {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.log('getMovies', error);
     }
   }
 
   onLoggedIn = authData => {
     // console.warn('authData', authData);
-    this.setState({
-      user: authData.user.Username
-    });
-    localStorage.setItem('token', authData.token);
-    localStorage.setItem('user', authData.user.Username);
-    this.getMovies(authData.token);
+    this.setState(
+      {
+        user: authData.user.Username
+      },
+      () => {
+        localStorage.setItem('token', authData.token);
+        localStorage.setItem('user', authData.user.Username);
+        this.getMovies(authData.token);
+      }
+    );
   };
 
   onRegister = username => {
@@ -77,7 +85,7 @@ class MainView extends Component {
     // temp logout method
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    setTimeout((window.location.href = '/'), 0);
+    setTimeout(() => (window.location.href = '/'), 0);
   };
 
   onModalClose = component => () => {

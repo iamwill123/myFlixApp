@@ -15,6 +15,7 @@ const RegistrationView = props => {
   const [validate, setValidation] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [errorValidate, setErrorValidation] = useState('');
 
   // Why 2 register users?
   // https://cloud.mongodb.com/v2/5b8b61c4c0c6e3634ef54c30#metrics/replicaSet/5c953208fd4cbae9c7c4f9aa/explorer/myFlixDB/users/find
@@ -34,19 +35,29 @@ const RegistrationView = props => {
         Birthday: birthday
       })
       .then(response => {
-        const data = response.data;
-        setSuccess(
-          `🎉 Hey ${data.Username}, you registered successfully, please login!`
-        );
-        setTimeout(() => props.onRegister(username), 5000);
-      })
-      .catch(e => {
-        if (e.message.includes('422')) {
-          setError('Error registering, please check all fields.');
-        } else {
-          setError('Oops, error registering, please try again later.');
+        if (response.statusText === 'Created') {
+          setErrorValidation('');
+          setError('');
+          const data = response.data;
+          setSuccess(
+            `🎉 Hey ${
+              data.Username
+            }, you registered successfully, please login!`
+          );
+          setTimeout(() => props.onRegister(username), 5000);
         }
-        console.log(e, 'error registering the user');
+      })
+      .catch(error => {
+        let errorResponse = error.response.data.errors[0];
+        const { msg, param, value } = errorResponse;
+        if (errorResponse) {
+          setErrorValidation(param);
+          setError(`
+            ${msg}
+            [${param}: ${value}]
+          `);
+        }
+        console.log('Error', errorResponse);
       });
     // .finally(() => setTimeout(() => props.onHide(), 5000));
   };
@@ -60,6 +71,8 @@ const RegistrationView = props => {
           placeholder="Enter email"
           value={email}
           onChange={e => setEmail(e.target.value)}
+          isInvalid={errorValidate === 'Email'}
+          style={{ borderColor: errorValidate === 'Email' && '#dc3545' }}
           required
         />
         <Form.Control.Feedback type="invalid">
@@ -77,6 +90,8 @@ const RegistrationView = props => {
           placeholder="Enter username"
           value={username}
           onChange={e => setUsername(e.target.value)}
+          isInvalid={errorValidate === 'Username'}
+          style={{ borderColor: errorValidate === 'Username' && '#dc3545' }}
           required
         />
         <Form.Control.Feedback type="invalid">
