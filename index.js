@@ -39,8 +39,6 @@ app.use(morgan('common'));
 // Server-Side Validation
 app.use(validator());
 
-
-
 // allows Mongoose to connect to the database thus integrating it with the REST API
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', {
 //   useNewUrlParser: true
