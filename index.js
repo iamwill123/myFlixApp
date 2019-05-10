@@ -25,19 +25,21 @@ const configs = {
   }
 };
 app.use(cors(configs));
-// our passport setup
-require('./passport.js');
+
 // app.use(middleware) -> adds middleware to our express app
 app.use(bodyParser.json());
 // https://www.npmjs.com/package/body-parser#bodyparserurlencodedoptions
 app.use(bodyParser.urlencoded({ extended: true }));
+// our login route, must come after bodyParser
+const auth = require('./auth')(app);
+// our passport setup
+require('./passport.js');
 // Logs every request info to terminal
 app.use(morgan('common'));
 // Server-Side Validation
 app.use(validator());
 
-// our login route
-const auth = require('./auth')(app);
+
 
 // allows Mongoose to connect to the database thus integrating it with the REST API
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', {
