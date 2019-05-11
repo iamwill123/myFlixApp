@@ -20,14 +20,14 @@ let newLocalStrategy = new LocalStrategy(
         return callback(error);
       }
       if (!user) {
-        console.log('incorrect username');
+        console.log('Incorrect Username');
         return callback(null, false, {
-          message: 'Incorrect username or password.'
+          message: 'Incorrect Username.'
         });
       }
       if (!user.validatePassword(password)) {
-        console.log('incorrect password');
-        return callback(null, false, { message: 'Incorrect password.' });
+        console.log('Incorrect Password');
+        return callback(null, false, { message: 'Incorrect Password.' });
       }
       console.log('finished');
       return callback(null, user);
