@@ -2,11 +2,11 @@ import React from 'react';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
-import { RegistrationModal } from '../registration-view/registration-modal';
-import { LoginModal } from '../login-view/login-modal';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import { isEmpty } from '../../helpers/isEmpty';
 import PropTypes from 'prop-types';
+import { isEmpty } from '../../../helpers/isEmpty';
+import { RegistrationModal } from '../../User/registration-view/registration-modal';
+import { LoginModal } from '../../User/login-view/login-modal';
 
 const WelcomeView = ({
   user,

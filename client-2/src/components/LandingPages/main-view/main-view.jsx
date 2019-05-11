@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
-import { MovieCard } from '../movie-card/movie-card';
-import { MovieView } from '../movie-view/movie-view';
+
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CardColumns from 'react-bootstrap/CardColumns';
-import { movieApi } from '../../helpers/movieAPI';
-import { isEmpty } from '../../helpers/isEmpty';
-import './main-view.scss';
+
 import { WelcomeView } from '../welcome-view/welcome-view';
-import { DirectorView } from '../director-view/director-view';
-import { GenreView } from '../genre-view/genre-view';
+import { DirectorView } from '../../Movie/director-view/director-view';
+import { GenreView } from '../../Movie/genre-view/genre-view';
+import { MovieView } from '../../Movie/movie-view/movie-view';
+import { MovieCard } from '../../Movie/movie-card/movie-card';
+
+import { movieApi } from '../../../helpers/movieAPI';
+import { isEmpty } from '../../../helpers/isEmpty';
+
+import './main-view.scss';
 
 class MainView extends Component {
   state = {

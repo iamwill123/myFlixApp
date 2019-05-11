@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import { ReusableModal } from '../modal/reusable-modal';
 import { RegistrationView } from './registration-view';
+import { ReusableModal } from '../../ReusableComponents/modal/reusable-modal';
 
 const RegistrationModal = props => {
   // console.log('RegistrationModal', props);

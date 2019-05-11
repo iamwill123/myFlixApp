@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { movieApi } from '../../helpers/movieAPI';
-import AlertView from '../alert-view/alert-view';
+import { movieApi } from '../../../helpers/movieAPI';
+import AlertView from '../../ReusableComponents/alert-view/alert-view';
 
 const RegistrationView = props => {
   // console.log('RegistrationView', props);

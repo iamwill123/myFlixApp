@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { movieApi } from '../../helpers/movieAPI';
-import { isEmpty } from '../../helpers/isEmpty';
-import AlertView from '../alert-view/alert-view';
+import { movieApi } from '../../../helpers/movieAPI';
+import { isEmpty } from '../../../helpers/isEmpty';
+import AlertView from '../../ReusableComponents/alert-view/alert-view';
 
 const LoginView = props => {
   // console.log('LoginView', props);
@@ -32,9 +32,14 @@ const LoginView = props => {
       })
       .catch(e => {
         console.log(e.response);
-        if (e.message.includes('400')) {
-          setError('No such Username.');
-        }
+        let errorMessage = e.response.data.message;
+        setError(errorMessage);
+        // if (e.message.includes('Username')) {
+        //   setError('No such Username.');
+        // }
+        // if (e.message.includes('Password')) {
+        //   setError('No such Username.');
+        // }
       });
   };
 
@@ -51,8 +56,8 @@ const LoginView = props => {
         <Form.Control.Feedback type="invalid">
           Please provide a Username.
         </Form.Control.Feedback>
-        {!isEmpty(error) && (
-          <AlertView variant="danger">This Username does not exist.</AlertView>
+        {!isEmpty(error) && error.includes('Username') && (
+          <AlertView variant="danger">{error}</AlertView>
         )}
         <Form.Text className="text-muted">
           We'll never share your username/email with anyone else.
@@ -70,6 +75,9 @@ const LoginView = props => {
         <Form.Control.Feedback type="invalid">
           Please provide your password.
         </Form.Control.Feedback>
+        {!isEmpty(error) && error.includes('Password') && (
+          <AlertView variant="danger">{error}</AlertView>
+        )}
       </Form.Group>
       <Button
         variant={

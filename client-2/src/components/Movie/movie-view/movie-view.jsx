@@ -1,8 +1,8 @@
 import React from 'react';
 import Media from 'react-bootstrap/Media';
 import Button from 'react-bootstrap/Button';
-import { isEmpty } from '../../helpers/isEmpty';
-import { placeholder } from '../../helpers/placeholder';
+import { isEmpty } from '../../../helpers/isEmpty';
+import { placeholder } from '../../../helpers/placeholder';
 
 const MovieView = ({ movie }) => {
   if (isEmpty(movie)) return <p>loading movie...</p>;
