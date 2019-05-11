@@ -54,7 +54,7 @@ userSchema.statics.hashPassword = password => {
 };
 
 userSchema.methods.validatePassword = function(password) {
-  console.log(password, this.Password);
+  // console.log(password, this.Password); can't use ()=> arrow function, because 'this' will not bind correctly
   return bcrypt.compareSync(password, this.Password);
 };
 
