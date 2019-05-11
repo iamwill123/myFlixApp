@@ -31,6 +31,7 @@ const LoginView = props => {
         props.onLoggedIn(data);
       })
       .catch(e => {
+        console.log(e.response);
         if (e.message.includes('400')) {
           setError('No such Username.');
         }

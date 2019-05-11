@@ -160,21 +160,22 @@ app.post('/user', (req, res) => {
       if (user) {
         return res.status(400).send(req.body.Username + 'already exists');
       } else {
+        // Alternative way to save user
         // https://twm.me/correct-way-to-use-mongoose/
-        const user = new User({
-          Username: req.body.Username,
-          Password: hashedPassword,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday
-        });
+        // const user = new User({
+        //   Username: req.body.Username,
+        //   Password: hashedPassword,
+        //   Email: req.body.Email,
+        //   Birthday: req.body.Birthday
+        // });
 
-        user.save((saveErr, savedUser) => {
-          if (saveErr) {
-            console.error(saveErr);
-            res.status(500).send('Error: ' + saveErr);
-          }
-          res.status(201).json(savedUser);
-        });
+        // user.save((saveErr, savedUser) => {
+        //   if (saveErr) {
+        //     console.error(saveErr);
+        //     res.status(500).send('Error: ' + saveErr);
+        //   }
+        //   res.status(201).json(savedUser);
+        // });
 
         User.create({
           Username: req.body.Username,
