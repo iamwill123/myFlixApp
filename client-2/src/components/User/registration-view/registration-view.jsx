@@ -28,7 +28,7 @@ const RegistrationView = props => {
     }
     setValidation(true);
     axios
-      .post(movieApi['registerUser'], {
+      .post(movieApi['user'], {
         Username: username,
         Password: password,
         Email: email,

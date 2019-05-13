@@ -7,21 +7,27 @@ import React, { Component } from 'react';
 // import Card from 'react-bootstrap/Card';
 // import Button from 'react-bootstrap/Button';
 
-import './profile-view.scss';
-
-class ProfileView extends Component {
+class UserList extends Component {
   state = {};
 
   render() {
-    const { user } = this.props;
-    console.log(user);
-    if (!user) return null;
+    const { users } = this.props;
+    console.log(users);
+    if (!users) return null;
     return (
       <>
-        <h1>Hey {user.Username}!</h1>
+        <h1>Users list route</h1>
+        {users.map(user => (
+          <div key={user._id}>
+            <ul>
+              <li>{user.Username}</li>
+              <li>{user.Email}</li>
+            </ul>
+          </div>
+        ))}
       </>
     );
   }
 }
 
-export default ProfileView;
+export default UserList;

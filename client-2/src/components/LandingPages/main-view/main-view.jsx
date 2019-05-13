@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
 
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CardColumns from 'react-bootstrap/CardColumns';
@@ -13,15 +13,20 @@ import { DirectorView } from '../../Movie/director-view/director-view';
 import { GenreView } from '../../Movie/genre-view/genre-view';
 import { MovieView } from '../../Movie/movie-view/movie-view';
 import { MovieCard } from '../../Movie/movie-card/movie-card';
+import ProfileView from '../../User/profile-view/profile-view';
 
 import { movieApi } from '../../../helpers/movieAPI';
 import { isEmpty } from '../../../helpers/isEmpty';
 
 import './main-view.scss';
+import UserList from '../../Users/users-list';
+import { GlobalNavbar } from '../../GlobalComponents/global-navbar';
+import Footer from '../../GlobalComponents/footer';
 
 class MainView extends Component {
   state = {
     user: null,
+    users: null,
     movies: [],
     selectedMovie: null,
     modalShow: {
@@ -40,6 +45,7 @@ class MainView extends Component {
           },
           () => {
             this.getMovies(accessToken);
+            this.getUsers(accessToken);
           }
         );
       }
@@ -62,6 +68,23 @@ class MainView extends Component {
       }
     } catch (error) {
       console.log('getMovies', error);
+    }
+  }
+
+  async getUsers(token) {
+    try {
+      let getUsers = await axios.get(movieApi['getUsers'], {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const { status, data } = getUsers;
+      if (status === 201) {
+        console.log(data);
+        this.setState({
+          users: data
+        });
+      }
+    } catch (error) {
+      console.log('getUsers', error);
     }
   }
 
@@ -104,7 +127,7 @@ class MainView extends Component {
   };
 
   render() {
-    const { movies, user, modalShow } = this.state;
+    const { movies, user, modalShow, users } = this.state;
     let movieCards = (
       <Row>
         <Col>
@@ -119,21 +142,9 @@ class MainView extends Component {
 
     return (
       <Router>
-        <div className="main-view">
-          <Container>
-            {!isEmpty(user) && (
-              <Row>
-                <Col>
-                  <Button
-                    variant="outline-secondary"
-                    onClick={this.onLoggedOut}
-                    className="float-right mb-2"
-                  >
-                    Logout
-                  </Button>
-                </Col>
-              </Row>
-            )}
+        <Container>
+          <GlobalNavbar user={user} onLoggedOut={this.onLoggedOut} />
+          <div className="main-view">
             <Route
               exact
               path="/"
@@ -148,6 +159,7 @@ class MainView extends Component {
                 />
               )}
             />
+
             <Route
               exact
               path="/movies"
@@ -211,12 +223,41 @@ class MainView extends Component {
                 );
               }}
             />
+
+            <Route
+              path="/users"
+              render={() => {
+                if (isEmpty(users))
+                  return (
+                    <div className="loading-view">
+                      <p>You must be logged in to view users list.</p>
+                    </div>
+                  );
+                return <UserList users={users} />;
+              }}
+            />
+
+            <Route
+              path="/profile/:username"
+              render={({ match }) => {
+                if (isEmpty(user))
+                  return (
+                    <div className="loading-view">
+                      <p>Login to view your profile.</p>
+                    </div>
+                  );
+                return (
+                  <ProfileView
+                    user={users.find(u => u.Username === match.params.username)}
+                  />
+                );
+              }}
+            />
             <Row>
-              <hr />
-              <Col>The footer</Col>
+              <Footer />
             </Row>
-          </Container>
-        </div>
+          </div>
+        </Container>
       </Router>
     );
   }
