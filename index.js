@@ -198,9 +198,9 @@ app.post('/user', (req, res) => {
     });
 });
 
-//list of all users for test needs
+// get a list of all users
 app.get(
-  '/user',
+  '/users',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     User.find()
@@ -214,7 +214,7 @@ app.get(
   }
 );
 
-//Allows to update user info, :Username is case sensitive
+// Allows to update user info, :Username is case sensitive
 app.put(
   '/user/:Username',
   passport.authenticate('jwt', { session: false }),
