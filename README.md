@@ -12,3 +12,8 @@ Login:
 - Test credentials: Username: test / Password: test
 
 Course: https://careerfoundry.com/
+
+Todos:
+- Add alert for successful login.
+- Add profile-view page
+- host prototype using https://github.com/gitname/react-gh-pages
