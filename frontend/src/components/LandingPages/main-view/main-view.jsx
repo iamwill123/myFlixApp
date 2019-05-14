@@ -22,6 +22,8 @@ import './main-view.scss';
 import UserList from '../../Users/users-list';
 import { GlobalNavbar } from '../../GlobalComponents/global-navbar';
 import Footer from '../../GlobalComponents/footer';
+// import ToastMessage from '../../ReusableComponents/toast-message/toast-message';
+import AlertView from '../../ReusableComponents/alert-view/alert-view';
 
 class MainView extends Component {
   state = {
@@ -32,6 +34,10 @@ class MainView extends Component {
     modalShow: {
       login: false,
       register: false
+    },
+    toastMessage: {
+      type: '',
+      show: false
     }
   };
 
@@ -92,12 +98,25 @@ class MainView extends Component {
     // console.warn('authData', authData);
     this.setState(
       {
-        user: authData.user.Username
+        user: authData.user.Username,
+        toastMessage: {
+          type: 'success',
+          show: true
+        }
       },
       () => {
         localStorage.setItem('token', authData.token);
         localStorage.setItem('user', authData.user.Username);
         this.getMovies(authData.token);
+        setTimeout(
+          () =>
+            this.setState({
+              toastMessage: {
+                show: false
+              }
+            }),
+          3000
+        );
       }
     );
   };
@@ -127,7 +146,8 @@ class MainView extends Component {
   };
 
   render() {
-    const { movies, user, modalShow, users } = this.state;
+    const { movies, user, modalShow, users, toastMessage } = this.state;
+    console.log(users);
     let movieCards = (
       <Row>
         <Col>
@@ -248,13 +268,49 @@ class MainView extends Component {
                   );
                 return (
                   <ProfileView
-                    user={users.find(u => u.Username === match.params.username)}
+                    user={
+                      user === match.params.username
+                        ? user
+                        : users.find(u => u.Username === match.params.username)
+                    }
                   />
                 );
               }}
             />
+            {/* For profile of other users */}
+            {/* <Route
+              path="/profile/:username"
+              render={({ match }) => {
+                if (isEmpty(user))
+                  return (
+                    <div className="loading-view">
+                      <p>Login to view your profile.</p>
+                    </div>
+                  );
+                return (
+                  <ProfileView
+                    user={users.find(u => u.Username === match.params.username)}
+                  />
+                );
+              }}
+            /> */}
             <Row>
+              {/* toast coming in next release */}
+              {/* {toastMessage.show && (
+                <ToastMessage
+                  showToast={toastMessage.show}
+                  variant={toastMessage.type}
+                >
+                  {toastMessage.type === 'success' && 'Success!'}
+                  {toastMessage.type === 'danger' && 'Something went wrong.'}
+                </ToastMessage>
+              )} */}
               <Footer />
+              {toastMessage.show && (
+                <AlertView position="absolute" variant={toastMessage.type}>
+                  {toastMessage.type === 'success' && 'Success!'}
+                </AlertView>
+              )}
             </Row>
           </div>
         </Container>

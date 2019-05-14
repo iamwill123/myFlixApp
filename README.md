@@ -7,6 +7,9 @@ Purpose:
 - Students can use this repo as a guideline for when they are stuck on a specific section.
 - Students should not be copying directly, if you do, I will know.
 
+Install:
+- `cd frontend` -> `yarn` -> `yarn start`
+- `cd backend` -> `npm install` or `yarn` -> `npm run start` or `yarn start`
 
 Login:
 - Test credentials: Username: test / Password: test
@@ -15,5 +18,5 @@ Course: https://careerfoundry.com/
 
 Todos:
 - Add alert for successful login.
-- Add profile-view page
+- Implement Redux
 - host prototype using https://github.com/gitname/react-gh-pages

@@ -17,8 +17,6 @@ const RegistrationView = props => {
   const [success, setSuccess] = useState('');
   const [errorValidate, setErrorValidation] = useState('');
 
-  // Why 2 register users?
-  // https://cloud.mongodb.com/v2/5b8b61c4c0c6e3634ef54c30#metrics/replicaSet/5c953208fd4cbae9c7c4f9aa/explorer/myFlixDB/users/find
   const handleSubmit = e => {
     e.preventDefault();
     const form = e.currentTarget;
