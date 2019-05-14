@@ -271,13 +271,14 @@ class MainView extends Component {
                     user={
                       user === match.params.username
                         ? user
-                        : users.find(u => u.Username === match.params.username)
+                        : users &&
+                          users.find(u => u.Username === match.params.username)
                     }
                   />
                 );
               }}
             />
-            {/* For profile of other users */}
+            {/* For profile of other users issue with find method */}
             {/* <Route
               path="/profile/:username"
               render={({ match }) => {

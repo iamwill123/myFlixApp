@@ -14,11 +14,11 @@ class ProfileView extends Component {
 
   render() {
     const { user } = this.props;
-    console.log(user);
+    console.log('user', user);
     if (!user) return null;
     return (
       <>
-        <h1>Hey {user}!</h1>
+        <h1>Hey {typeof user === 'string' ? user : user.Username}!</h1>
       </>
     );
   }
