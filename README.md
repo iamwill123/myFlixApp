@@ -17,6 +17,6 @@ Login:
 Course: https://careerfoundry.com/
 
 Todos:
-- Add alert for successful login.
+- add a loader for requests.
 - Implement Redux
 - host prototype using https://github.com/gitname/react-gh-pages

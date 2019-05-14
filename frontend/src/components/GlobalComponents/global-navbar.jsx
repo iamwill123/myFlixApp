@@ -22,7 +22,7 @@ const GlobalNavbar = ({ user, onLoggedOut }) => {
       sticky="top"
     >
       <Navbar.Brand>
-        <Link to={`/`}>Home</Link>
+        <Link to={`/myFlixApp`}>Home</Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">

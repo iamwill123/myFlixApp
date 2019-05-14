@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 // import Button from 'react-bootstrap/Button';
@@ -24,6 +25,14 @@ import { GlobalNavbar } from '../../GlobalComponents/global-navbar';
 import Footer from '../../GlobalComponents/footer';
 // import ToastMessage from '../../ReusableComponents/toast-message/toast-message';
 import AlertView from '../../ReusableComponents/alert-view/alert-view';
+import { setMovies } from '../../../redux/actions/actions';
+
+const mapState = state => ({
+  movies: state.movies
+  // loading: state.async.loading,
+});
+
+const actions = { setMovies };
 
 class MainView extends Component {
   state = {
@@ -68,9 +77,10 @@ class MainView extends Component {
       const { status, data } = getMovies; // returns an array of movies
       // console.warn(data);
       if (status === 201) {
-        this.setState({
-          movies: data
-        });
+        this.props.setMovies(data);
+        // this.setState({
+        //   movies: data
+        // });
       }
     } catch (error) {
       console.log('getMovies', error);
@@ -131,7 +141,7 @@ class MainView extends Component {
     // temp logout method
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    setTimeout(() => (window.location.href = '/'), 0);
+    setTimeout(() => (window.location.href = '/myFlixApp'), 0);
   };
 
   onModalClose = component => () => {
@@ -146,8 +156,9 @@ class MainView extends Component {
   };
 
   render() {
-    const { movies, user, modalShow, users, toastMessage } = this.state;
-    console.log(users);
+    const { user, modalShow, users, toastMessage } = this.state;
+    const { movies } = this.props;
+
     let movieCards = (
       <Row>
         <Col>
@@ -167,7 +178,7 @@ class MainView extends Component {
           <div className="main-view">
             <Route
               exact
-              path="/"
+              path="/myFlixApp"
               render={() => (
                 <WelcomeView
                   user={user}
@@ -278,23 +289,7 @@ class MainView extends Component {
                 );
               }}
             />
-            {/* For profile of other users issue with find method */}
-            {/* <Route
-              path="/profile/:username"
-              render={({ match }) => {
-                if (isEmpty(user))
-                  return (
-                    <div className="loading-view">
-                      <p>Login to view your profile.</p>
-                    </div>
-                  );
-                return (
-                  <ProfileView
-                    user={users.find(u => u.Username === match.params.username)}
-                  />
-                );
-              }}
-            /> */}
+
             <Row>
               {/* toast coming in next release */}
               {/* {toastMessage.show && (
@@ -319,5 +314,8 @@ class MainView extends Component {
     );
   }
 }
-
-export default MainView;
+// connect(mapStateToProps, mapDispatchToProps, mergeProps, options)
+export default connect(
+  mapState,
+  actions
+)(MainView);
