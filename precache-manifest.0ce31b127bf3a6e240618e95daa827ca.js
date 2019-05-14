@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d789935114524ab49f35bb7f6393cb5e",
+    "revision": "06cb399211ba75f841d468816d53867c",
     "url": "/myFlixApp/index.html"
   },
   {
-    "revision": "1bcdde3c0cbec1d82529",
+    "revision": "e30a1ce1b1b2dcaee86c",
     "url": "/myFlixApp/static/css/2.22a7d4ef.chunk.css"
   },
   {
-    "revision": "154a911f8ca59698df4e",
+    "revision": "2b2c693e61ee03875a63",
     "url": "/myFlixApp/static/css/main.3a577319.chunk.css"
   },
   {
-    "revision": "1bcdde3c0cbec1d82529",
-    "url": "/myFlixApp/static/js/2.48cacdc8.chunk.js"
+    "revision": "e30a1ce1b1b2dcaee86c",
+    "url": "/myFlixApp/static/js/2.502eeeb0.chunk.js"
   },
   {
-    "revision": "154a911f8ca59698df4e",
-    "url": "/myFlixApp/static/js/main.46c838df.chunk.js"
+    "revision": "2b2c693e61ee03875a63",
+    "url": "/myFlixApp/static/js/main.08d55872.chunk.js"
   },
   {
     "revision": "eb9c53c8bc0dc0bff9c5",
