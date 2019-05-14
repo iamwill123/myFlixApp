@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.0/workbox-sw.js");
 
 importScripts(
-  "/myFlixApp/precache-manifest.9b3a9325b3d985d0bb79133b881f6034.js"
+  "/myFlixApp/precache-manifest.434637a9f25575f3dd372f76df998d4d.js"
 );
 
 self.addEventListener('message', (event) => {
