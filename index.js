@@ -11,7 +11,7 @@ const express = require('express'),
   User = Models.User;
 
 // CORS setup
-let allowedOrigins = ['http://localhost:1234', 'http://localhost:3000'];
+let allowedOrigins = ['http://localhost:1234', 'http://localhost:3000', 'https://iamwill123.github.io'];
 const configs = {
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
