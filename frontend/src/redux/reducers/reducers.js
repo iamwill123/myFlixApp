@@ -10,7 +10,7 @@ const visibilityFilter = (state = '', action) => {
   }
 };
 
-const sortColumn = (state = 'title', action) => {
+const sortColumn = (state = 'Title', action) => {
   switch (action.type) {
     case SET_SORT_COLUMN:
       return action.value;
@@ -29,13 +29,13 @@ const movies = (state = [], action) => {
 };
 
 // combined reducer
-const moviesAppWithoutRedux = (state = {}, action) => {
-  return {
-    visibilityFilter: visibilityFilter(state.visibilityFilter, action),
-    sortColumn: sortColumn(state.sortColumn, action),
-    movies: movies(state.movies, action)
-  };
-};
+// const moviesAppWithoutRedux = (state = {}, action) => {
+//   return {
+//     visibilityFilter: visibilityFilter(state.visibilityFilter, action),
+//     sortColumn: sortColumn(state.sortColumn, action),
+//     movies: movies(state.movies, action)
+//   };
+// };
 
 const moviesApp = combineReducers({
   visibilityFilter,

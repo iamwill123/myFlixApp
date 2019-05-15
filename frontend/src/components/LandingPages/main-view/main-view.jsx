@@ -4,16 +4,12 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
-// import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import CardColumns from 'react-bootstrap/CardColumns';
 
 import { WelcomeView } from '../welcome-view/welcome-view';
 import { DirectorView } from '../../Movie/director-view/director-view';
 import { GenreView } from '../../Movie/genre-view/genre-view';
 import { MovieView } from '../../Movie/movie-view/movie-view';
-import { MovieCard } from '../../Movie/movie-card/movie-card';
+import MoviesList from '../../Movie/movies-list/movies-list';
 import ProfileView from '../../User/profile-view/profile-view';
 
 import { movieApi } from '../../../helpers/movieAPI';
@@ -26,6 +22,8 @@ import Footer from '../../GlobalComponents/footer';
 // import ToastMessage from '../../ReusableComponents/toast-message/toast-message';
 import AlertView from '../../ReusableComponents/alert-view/alert-view';
 import { setMovies } from '../../../redux/actions/actions';
+
+import Row from 'react-bootstrap/Row';
 
 const mapState = state => ({
   movies: state.movies
@@ -118,6 +116,7 @@ class MainView extends Component {
         localStorage.setItem('token', authData.token);
         localStorage.setItem('user', authData.user.Username);
         this.getMovies(authData.token);
+        this.getUsers(authData.token);
         setTimeout(
           () =>
             this.setState({
@@ -159,18 +158,6 @@ class MainView extends Component {
     const { user, modalShow, users, toastMessage } = this.state;
     const { movies } = this.props;
 
-    let movieCards = (
-      <Row>
-        <Col>
-          <CardColumns>
-            {movies.map(movie => {
-              return <MovieCard movie={movie} key={movie._id} />;
-            })}
-          </CardColumns>
-        </Col>
-      </Row>
-    );
-
     return (
       <Router>
         <Container>
@@ -200,7 +187,7 @@ class MainView extends Component {
                     <p>Loading movies...</p>
                   </div>
                 ) : (
-                  movieCards
+                  <MoviesList />
                 )
               }
             />
