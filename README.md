@@ -18,5 +18,6 @@ Course: https://careerfoundry.com/
 
 Todos:
 - add a loader for requests.
-- Implement Redux
-- host prototype using https://github.com/gitname/react-gh-pages
+- redo router, separate it from main-view.
+- add option to filter search other keys.
+- Add PropTypes to all components that receives props
