@@ -5,29 +5,36 @@ import { MovieCard } from '../movie-card/movie-card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CardColumns from 'react-bootstrap/CardColumns';
-
+import PropTypes from 'prop-types';
+import SortColumnDropdown from '../../GlobalComponents/sort-column-dropdown';
 // mapStateToProps
 const mapState = state => {
-  console.warn(state);
-  const { movies, sortColumn } = state;
+  const { movies, visibilityFilter, sortColumn } = state;
 
-  let sortedMovies = movies.concat().sort((a, b) => {
+  let moviesToShow = movies.concat().sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) return -1;
     if (a[sortColumn] > b[sortColumn]) return 1;
     return 0;
   });
-  console.log('sortedMovies', sortedMovies);
-  return { movies: sortedMovies };
+
+  if (visibilityFilter !== '') {
+    moviesToShow = moviesToShow.filter(
+      movie =>
+        movie.Title.includes(visibilityFilter) ||
+        movie.Title.toLowerCase().includes(visibilityFilter)
+    );
+  }
+  return { movies: moviesToShow };
 };
 
 const MoviesList = props => {
   const { movies } = props;
-  console.log(movies);
 
   if (!movies) return <p>loading...</p>;
   return (
     <Row>
       <Col>
+        <SortColumnDropdown />
         <CardColumns>
           {movies.map(movie => {
             return <MovieCard movie={movie} key={movie._id} />;
@@ -36,6 +43,10 @@ const MoviesList = props => {
       </Col>
     </Row>
   );
+};
+
+MoviesList.propTypes = {
+  movies: PropTypes.array.isRequired
 };
 
 // Notes:

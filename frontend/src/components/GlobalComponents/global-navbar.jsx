@@ -2,11 +2,11 @@ import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
+// import Button from 'react-bootstrap/Button';
+// import Form from 'react-bootstrap/Form';
+// import FormControl from 'react-bootstrap/FormControl';
 import { Link, NavLink } from 'react-router-dom';
-
+import VisibilityFilterInput from './visibility-filter-input';
 import PropTypes from 'prop-types';
 import { isEmpty } from '../../helpers/isEmpty';
 
@@ -47,10 +47,8 @@ const GlobalNavbar = ({ user, onLoggedOut }) => {
           </Nav>
         )}
 
-        <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-primary">Search</Button>
-        </Form>
+        <VisibilityFilterInput />
+
       </Navbar.Collapse>
     </Navbar>
   );
