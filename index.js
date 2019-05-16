@@ -198,6 +198,24 @@ app.post('/user', (req, res) => {
     });
 });
 
+// get a single user
+app.get(
+  '/user/:Username',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    User.findOne({
+      Username: req.params.Username
+    })
+      .then(user => {
+        res.status(201).json(user);
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
+);
+
 // get a list of all users
 app.get(
   '/users',
