@@ -7,6 +7,9 @@ import Col from 'react-bootstrap/Col';
 import CardColumns from 'react-bootstrap/CardColumns';
 import PropTypes from 'prop-types';
 import SortColumnDropdown from '../../GlobalComponents/sort-column-dropdown';
+
+const getFirstKeyValueOfNestedObj = obj => Object.entries(obj)[0][1];
+
 // mapStateToProps
 const mapState = state => {
   const { movies, visibilityFilter, sortColumn } = state;
@@ -17,12 +20,19 @@ const mapState = state => {
     return 0;
   });
 
+  // filter search according to sortColumn result.
   if (visibilityFilter !== '') {
-    moviesToShow = moviesToShow.filter(
-      movie =>
-        movie.Title.includes(visibilityFilter) ||
-        movie.Title.toLowerCase().includes(visibilityFilter)
-    );
+    moviesToShow = moviesToShow.filter(movie => {
+      if (typeof movie[sortColumn] === 'object') {
+        return getFirstKeyValueOfNestedObj(movie[sortColumn])
+          .toLowerCase()
+          .includes(visibilityFilter);
+      }
+      return (
+        movie[sortColumn].includes(visibilityFilter) ||
+        movie[sortColumn].toLowerCase().includes(visibilityFilter)
+      );
+    });
   }
   return { movies: moviesToShow };
 };

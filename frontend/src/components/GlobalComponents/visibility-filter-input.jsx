@@ -10,7 +10,10 @@ const actions = {
   setFilter
 };
 
-const mapState = ({ visibilityFilter }) => ({ visibilityFilter });
+const mapState = ({ visibilityFilter, sortColumn }) => ({
+  visibilityFilter,
+  sortColumn
+});
 
 const VisibilityFilterInput = props => {
   return (
@@ -19,7 +22,7 @@ const VisibilityFilterInput = props => {
         onChange={e => props.setFilter(e.target.value)}
         value={props.visibilityFilter}
         type="text"
-        placeholder="Filtered search"
+        placeholder={`Search by ${props.sortColumn}`}
         className="mr-sm-2"
       />
     </Form>
