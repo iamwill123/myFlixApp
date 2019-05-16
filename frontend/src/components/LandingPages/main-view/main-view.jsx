@@ -92,7 +92,7 @@ class MainView extends Component {
       });
       const { status, data } = getUsers;
       if (status === 201) {
-        console.log(data);
+        // console.log(data);
         this.setState({
           users: data
         });

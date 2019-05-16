@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 import axios from 'axios';
 import { movieApi } from '../../../helpers/movieAPI';
 import AlertView from '../../ReusableComponents/alert-view/alert-view';
 
 const RegistrationView = props => {
   // console.log('RegistrationView', props);
+  const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
@@ -24,7 +26,10 @@ const RegistrationView = props => {
       e.preventDefault();
       e.stopPropagation();
     }
+
     setValidation(true);
+    setLoading(true);
+
     axios
       .post(movieApi['user'], {
         Username: username,
@@ -34,6 +39,7 @@ const RegistrationView = props => {
       })
       .then(response => {
         if (response.statusText === 'Created') {
+          setTimeout(() => setLoading(false), 1000);
           setErrorValidation('');
           setError('');
           const data = response.data;
@@ -49,6 +55,7 @@ const RegistrationView = props => {
         let errorResponse = error.response.data.errors[0];
         const { msg, param, value } = errorResponse;
         if (errorResponse) {
+          setLoading(false);
           setErrorValidation(param);
           setError(`
             ${msg}
@@ -154,10 +161,20 @@ const RegistrationView = props => {
           !email ||
           !password.includes(confirmPassword) ||
           password !== confirmPassword ||
-          success
+          success || loading
         }
       >
-        Register
+        {loading
+          ? (
+              <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) && 'Hold please ...'
+          : 'Register' }
       </Button>
       {error && <AlertView variant="danger">{error}</AlertView>}
       {success && <AlertView variant="success">{success}</AlertView>}

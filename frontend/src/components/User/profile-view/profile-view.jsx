@@ -14,7 +14,7 @@ class ProfileView extends Component {
 
   render() {
     const { user } = this.props;
-    console.log('user', user);
+    // console.log('user', user);
     if (!user) return null;
     return (
       <>

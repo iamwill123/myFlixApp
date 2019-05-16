@@ -12,7 +12,7 @@ class UserList extends Component {
 
   render() {
     const { users } = this.props;
-    console.log(users);
+    // console.log(users);
     if (!users) return null;
     return (
       <>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 import axios from 'axios';
 import { movieApi } from '../../../helpers/movieAPI';
 import { isEmpty } from '../../../helpers/isEmpty';
@@ -8,6 +9,7 @@ import AlertView from '../../ReusableComponents/alert-view/alert-view';
 
 const LoginView = props => {
   // console.log('LoginView', props);
+  const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [validate, setValidation] = useState(false);
@@ -15,12 +17,16 @@ const LoginView = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
+
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
     }
+
     setValidation(true);
+    setLoading(true);
+
     axios
       .post(movieApi['login'], {
         Username: username,
@@ -28,18 +34,14 @@ const LoginView = props => {
       })
       .then(response => {
         const data = response.data;
-        props.onLoggedIn(data);
+        setTimeout(() => setLoading(false), 1000);
+        setTimeout(() => props.onLoggedIn(data), 1000);
       })
       .catch(e => {
+        setLoading(false);
         console.log(e.response);
         let errorMessage = e.response.data.message;
         setError(errorMessage);
-        // if (e.message.includes('Username')) {
-        //   setError('No such Username.');
-        // }
-        // if (e.message.includes('Password')) {
-        //   setError('No such Username.');
-        // }
       });
   };
 
@@ -84,9 +86,19 @@ const LoginView = props => {
           !username || !password ? 'outline-secondary' : 'outline-primary'
         }
         type="submit"
-        disabled={!username || !password}
+        disabled={!username || !password || loading}
       >
-        Login
+        {loading
+          ? (
+              <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) && 'Hold please ...'
+          : 'Login'}
       </Button>
     </Form>
   );
