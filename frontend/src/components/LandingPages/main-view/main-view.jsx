@@ -21,22 +21,20 @@ import { GlobalNavbar } from '../../GlobalComponents/global-navbar';
 import Footer from '../../GlobalComponents/footer';
 // import ToastMessage from '../../ReusableComponents/toast-message/toast-message';
 import AlertView from '../../ReusableComponents/alert-view/alert-view';
-import { setMovies } from '../../../redux/actions/actions';
+import { setMovies, setUser, setUsers } from '../../../redux/actions/actions';
 
 import Row from 'react-bootstrap/Row';
 
-const mapState = state => ({
-  movies: state.movies
-  // loading: state.async.loading,
+const mapState = ({ movies, user, users }) => ({
+  movies,
+  user,
+  users
 });
 
-const actions = { setMovies };
+const actions = { setMovies, setUser, setUsers };
 
 class MainView extends Component {
   state = {
-    user: null,
-    users: null,
-    movies: [],
     selectedMovie: null,
     modalShow: {
       login: false,
@@ -52,18 +50,27 @@ class MainView extends Component {
     try {
       let accessToken = await localStorage.getItem('token');
       if (accessToken !== null) {
-        this.setState(
-          {
-            user: localStorage.getItem('user')
-          },
-          () => {
-            this.getMovies(accessToken);
-            this.getUsers(accessToken);
-          }
-        );
+        await this.getUser(accessToken);
+        await this.getMovies(accessToken);
+        await this.getUsers(accessToken);
       }
     } catch (error) {
       console.log('componentDidMount', error);
+    }
+  }
+
+  async getUser(token) {
+    try {
+      let username = await localStorage.getItem('user');
+      let getUser = await axios.get(`${movieApi['user']}/${username}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const { status, data } = getUser;
+      if (status === 201) {
+        this.props.setUser(data);
+      }
+    } catch (error) {
+      console.log('getUsers', error);
     }
   }
 
@@ -92,10 +99,7 @@ class MainView extends Component {
       });
       const { status, data } = getUsers;
       if (status === 201) {
-        // console.log(data);
-        this.setState({
-          users: data
-        });
+        this.props.setUsers(data);
       }
     } catch (error) {
       console.log('getUsers', error);
@@ -103,10 +107,9 @@ class MainView extends Component {
   }
 
   onLoggedIn = authData => {
-    // console.warn('authData', authData);
+    this.props.setUser(authData.user);
     this.setState(
       {
-        user: authData.user.Username,
         toastMessage: {
           type: 'success',
           show: true
@@ -130,8 +133,7 @@ class MainView extends Component {
     );
   };
 
-  onRegister = username => {
-    // console.warn('onRegister', username);
+  onRegister = () => {
     setTimeout(this.onModalClose('register'), 0);
     setTimeout(this.onModalShow('login'), 0);
   };
@@ -155,8 +157,8 @@ class MainView extends Component {
   };
 
   render() {
-    const { user, modalShow, users, toastMessage } = this.state;
-    const { movies } = this.props;
+    const { modalShow, toastMessage } = this.state;
+    const { movies, users, user } = this.props;
 
     return (
       <Router>

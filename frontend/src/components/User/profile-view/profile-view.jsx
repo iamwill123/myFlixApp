@@ -18,7 +18,8 @@ class ProfileView extends Component {
     if (!user) return null;
     return (
       <>
-        <h1>Hey {typeof user === 'string' ? user : user.Username}!</h1>
+        <h1>Hey {user.Username}!</h1>
+        <p>{user.Email}</p>
       </>
     );
   }

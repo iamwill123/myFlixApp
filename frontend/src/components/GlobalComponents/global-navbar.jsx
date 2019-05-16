@@ -31,8 +31,15 @@ const GlobalNavbar = ({ user, onLoggedOut }) => {
             <Nav.Link as={NavLink} to={`/users`} exact>
               People
             </Nav.Link>
-            <NavDropdown title={`👤 ${user}`} id="collasible-nav-dropdown">
-              <NavDropdown.Item as={NavLink} to={`/profile/${user}`} exact>
+            <NavDropdown
+              title={`👤 ${user.Username}`}
+              id="collasible-nav-dropdown"
+            >
+              <NavDropdown.Item
+                as={NavLink}
+                to={`/profile/${user.Username}`}
+                exact
+              >
                 Profile
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">Favorites</NavDropdown.Item>
@@ -47,8 +54,7 @@ const GlobalNavbar = ({ user, onLoggedOut }) => {
           </Nav>
         )}
 
-        <VisibilityFilterInput />
-
+        {!isEmpty(user) && <VisibilityFilterInput />}
       </Navbar.Collapse>
     </Navbar>
   );
