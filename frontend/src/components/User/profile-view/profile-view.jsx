@@ -1,26 +1,72 @@
 import React, { Component } from 'react';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import PropTypes from 'prop-types';
-// import Container from 'react-bootstrap/Container';
-// import Row from 'react-bootstrap/Row';
-// import Col from 'react-bootstrap/Col';
-// import Card from 'react-bootstrap/Card';
-// import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import CardColumns from 'react-bootstrap/CardColumns';
+import ListGroup from 'react-bootstrap/ListGroup';
+import ListGroupItem from 'react-bootstrap/ListGroupItem';
 
 import './profile-view.scss';
+import { unsplashPlaceholder } from '../../../helpers/placeholder';
+import { deleteUser } from '../../../helpers/movieAPI';
+import { isEmpty } from '../../../helpers/isEmpty';
+import { FavoriteMoviesView } from './favorite-movies-view';
 
 class ProfileView extends Component {
   state = {};
 
+  onHandleUserDelete(username) {
+    deleteUser(username)
+      .then(res => {
+        console.log(res);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
   render() {
-    const { user } = this.props;
-    // console.log('user', user);
-    if (!user) return null;
+    if (isEmpty(this.props.user)) return 'Loading user profile...';
+    const {
+      user: { Username, Email, FavoriteMovies }
+    } = this.props;
     return (
-      <>
-        <h1>Hey {user.Username}!</h1>
-        <p>{user.Email}</p>
-      </>
+      <div>
+        <Card>
+          <Card.Img
+            variant="top"
+            src={unsplashPlaceholder('1024x300', 'nature')}
+          />
+          <Card.Body>
+            <Card.Title>{Username}</Card.Title>
+            <Card.Text>{Email}</Card.Text>
+          </Card.Body>
+          <ListGroup className="list-group-flush">
+            <ListGroupItem>Cras justo odio</ListGroupItem>
+            <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
+            <ListGroupItem>Vestibulum at eros</ListGroupItem>
+          </ListGroup>
+          <Card.Body>
+            <Button
+              variant="danger"
+              onClick={() => this.onHandleUserDelete(Username)}
+            >
+              Delete Account
+            </Button>
+            <Card.Link href="#">Another Link</Card.Link>
+          </Card.Body>
+        </Card>
+        <CardColumns>
+          {!isEmpty(FavoriteMovies)
+            ? FavoriteMovies.map(movie => {
+                return <FavoriteMoviesView movie={movie} key={movie._id} />;
+              })
+            : 'Add some movies to your favorites list.'}
+        </CardColumns>
+      </div>
     );
   }
 }

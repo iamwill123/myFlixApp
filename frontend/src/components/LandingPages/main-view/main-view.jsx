@@ -76,7 +76,7 @@ class MainView extends Component {
 
   async getMovies(token) {
     try {
-      let getMovies = await axios.get(movieApi['getMovies'], {
+      let getMovies = await axios.get(movieApi['movies'], {
         headers: { Authorization: `Bearer ${token}` }
       });
       const { status, data } = getMovies; // returns an array of movies
@@ -94,7 +94,7 @@ class MainView extends Component {
 
   async getUsers(token) {
     try {
-      let getUsers = await axios.get(movieApi['getUsers'], {
+      let getUsers = await axios.get(movieApi['users'], {
         headers: { Authorization: `Bearer ${token}` }
       });
       const { status, data } = getUsers;
