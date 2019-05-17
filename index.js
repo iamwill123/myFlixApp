@@ -68,6 +68,24 @@ app.get(
   }
 );
 
+// Returns data about a single movie by movie id
+app.get(
+  '/movies/:MovieId',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Movies.findOne({
+      _id: req.params.MovieId
+    })
+      .then(movie => {
+        res.json(movie);
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
+);
+
 // Returns data about a single movie by title
 app.get(
   '/movies/:Title',
@@ -264,7 +282,7 @@ app.put(
   }
 );
 
-//Allows users to add a movie to their list of favorites
+// Allows users to add a movie to their list of favorites
 app.post(
   '/user/:Username/FavoriteMovies/:MovieID',
   passport.authenticate('jwt', { session: false }),
