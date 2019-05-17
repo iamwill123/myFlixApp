@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
-import axios from 'axios';
-import { movieApi } from '../../../helpers/movieAPI';
 import AlertView from '../../ReusableComponents/alert-view/alert-view';
+import { registerUser } from '../../../helpers/movieAPI';
 
 const RegistrationView = props => {
   // console.log('RegistrationView', props);
@@ -30,13 +29,7 @@ const RegistrationView = props => {
     setValidation(true);
     setLoading(true);
 
-    axios
-      .post(movieApi['user'], {
-        Username: username,
-        Password: password,
-        Email: email,
-        Birthday: birthday
-      })
+    registerUser(username, password, email, birthday)
       .then(response => {
         if (response.statusText === 'Created') {
           setTimeout(() => setLoading(false), 1000);
@@ -48,7 +41,7 @@ const RegistrationView = props => {
               data.Username
             }, you registered successfully, please login!`
           );
-          setTimeout(() => props.onRegister(username), 5000);
+          setTimeout(() => props.onRegister(), 5000);
         }
       })
       .catch(error => {
@@ -161,7 +154,8 @@ const RegistrationView = props => {
           !email ||
           !password.includes(confirmPassword) ||
           password !== confirmPassword ||
-          success || loading
+          success ||
+          loading
         }
       >
         {loading
@@ -174,7 +168,7 @@ const RegistrationView = props => {
                 aria-hidden="true"
               />
             ) && 'Hold please ...'
-          : 'Register' }
+          : 'Register'}
       </Button>
       {error && <AlertView variant="danger">{error}</AlertView>}
       {success && <AlertView variant="success">{success}</AlertView>}

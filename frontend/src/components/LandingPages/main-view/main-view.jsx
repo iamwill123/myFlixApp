@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-
-import Container from 'react-bootstrap/Container';
+import { connect } from 'react-redux';
+import { setMovies, setUser, setUsers } from '../../../redux/actions/actions';
 
 import { WelcomeView } from '../welcome-view/welcome-view';
 import { DirectorView } from '../../Movie/director-view/director-view';
@@ -11,19 +9,19 @@ import { GenreView } from '../../Movie/genre-view/genre-view';
 import { MovieView } from '../../Movie/movie-view/movie-view';
 import MoviesList from '../../Movie/movies-list/movies-list';
 import ProfileView from '../../User/profile-view/profile-view';
+import { GlobalNavbar } from '../../GlobalComponents/global-navbar';
+import UserList from '../../Users/users-list';
+import Footer from '../../GlobalComponents/footer';
 
-import { movieApi } from '../../../helpers/movieAPI';
+import { getUser, getMovies, getUsers } from '../../../helpers/movieAPI';
 import { isEmpty } from '../../../helpers/isEmpty';
 
-import './main-view.scss';
-import UserList from '../../Users/users-list';
-import { GlobalNavbar } from '../../GlobalComponents/global-navbar';
-import Footer from '../../GlobalComponents/footer';
 // import ToastMessage from '../../ReusableComponents/toast-message/toast-message';
+import Container from 'react-bootstrap/Container';
 import AlertView from '../../ReusableComponents/alert-view/alert-view';
-import { setMovies, setUser, setUsers } from '../../../redux/actions/actions';
-
 import Row from 'react-bootstrap/Row';
+
+import './main-view.scss';
 
 const mapState = ({ movies, user, users }) => ({
   movies,
@@ -50,54 +48,47 @@ class MainView extends Component {
     try {
       let accessToken = await localStorage.getItem('token');
       if (accessToken !== null) {
-        await this.getUser(accessToken);
-        await this.getMovies(accessToken);
-        await this.getUsers(accessToken);
+        await this.getCurrentUser();
+        await this.getMoviesList();
+        await this.getUsersList();
       }
     } catch (error) {
       console.log('componentDidMount', error);
     }
   }
 
-  async getUser(token) {
+  async getCurrentUser() {
     try {
-      let username = await localStorage.getItem('user');
-      let getUser = await axios.get(`${movieApi['user']}/${username}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const { status, data } = getUser;
+      let username = await localStorage.getItem('username');
+      let token = await localStorage.getItem('token');
+      let getCurrentUser = await getUser(username, token);
+      const { status, data } = getCurrentUser;
       if (status === 201) {
         this.props.setUser(data);
       }
     } catch (error) {
-      console.log('getUsers', error);
+      console.log('getCurrentUser', error);
     }
   }
 
-  async getMovies(token) {
+  async getMoviesList() {
     try {
-      let getMovies = await axios.get(movieApi['movies'], {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const { status, data } = getMovies; // returns an array of movies
-      // console.warn(data);
+      let token = await localStorage.getItem('token');
+      let getMoviesList = await getMovies(token);
+      const { status, data } = getMoviesList;
       if (status === 201) {
         this.props.setMovies(data);
-        // this.setState({
-        //   movies: data
-        // });
       }
     } catch (error) {
       console.log('getMovies', error);
     }
   }
 
-  async getUsers(token) {
+  async getUsersList() {
     try {
-      let getUsers = await axios.get(movieApi['users'], {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const { status, data } = getUsers;
+      let token = await localStorage.getItem('token');
+      let getUsersList = await getUsers(token);
+      const { status, data } = getUsersList;
       if (status === 201) {
         this.props.setUsers(data);
       }
@@ -107,6 +98,8 @@ class MainView extends Component {
   }
 
   onLoggedIn = authData => {
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('username', authData.user.Username);
     this.props.setUser(authData.user);
     this.setState(
       {
@@ -116,10 +109,8 @@ class MainView extends Component {
         }
       },
       () => {
-        localStorage.setItem('token', authData.token);
-        localStorage.setItem('user', authData.user.Username);
-        this.getMovies(authData.token);
-        this.getUsers(authData.token);
+        this.getMoviesList();
+        this.getUsersList();
         setTimeout(
           () =>
             this.setState({
@@ -141,7 +132,7 @@ class MainView extends Component {
   onLoggedOut = () => {
     // temp logout method
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem('username');
     setTimeout(() => (window.location.href = '/myFlixApp'), 0);
   };
 

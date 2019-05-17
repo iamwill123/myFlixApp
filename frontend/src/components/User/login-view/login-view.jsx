@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
-import axios from 'axios';
-import { movieApi } from '../../../helpers/movieAPI';
+import { loginUser } from '../../../helpers/movieAPI';
 import { isEmpty } from '../../../helpers/isEmpty';
 import AlertView from '../../ReusableComponents/alert-view/alert-view';
 
@@ -27,11 +26,7 @@ const LoginView = props => {
     setValidation(true);
     setLoading(true);
 
-    axios
-      .post(movieApi['login'], {
-        Username: username,
-        Password: password
-      })
+    loginUser(username, password)
       .then(response => {
         const data = response.data;
         setTimeout(() => setLoading(false), 1000);
