@@ -21,6 +21,7 @@ Login:
 Course: https://careerfoundry.com/
 
 Todos:
+- Add scoped search (add filter button next to search bar)
 - Add all user route features
 - add a loader for requests.
 - redo router, separate it from main-view.
