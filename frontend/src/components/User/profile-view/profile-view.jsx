@@ -49,26 +49,33 @@ class ProfileView extends Component {
             <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
             <ListGroupItem>Vestibulum at eros</ListGroupItem>
           </ListGroup>
-          <Card.Body>
+          <Card.Body style={styles.deleteAccountBtnWrapper}>
             <Button
               variant="danger"
               onClick={() => this.onHandleUserDelete(Username)}
             >
               Delete Account
             </Button>
-            <Card.Link href="#">Another Link</Card.Link>
           </Card.Body>
         </Card>
         <CardColumns>
-          {!isEmpty(FavoriteMovies)
-            ? FavoriteMovies.map(movie => {
-                return <FavoriteMoviesView movie={movie} key={movie._id} />;
-              })
-            : 'Add some movies to your favorites list.'}
+          {!isEmpty(FavoriteMovies) ? (
+            FavoriteMovies.map(movie => {
+              return <FavoriteMoviesView movie={movie} key={movie._id} />;
+            })
+          ) : (
+            <h2>Favorites list.</h2>
+          )}
         </CardColumns>
       </div>
     );
   }
 }
+
+const styles = {
+  deleteAccountBtnWrapper: {
+    textAlign: 'right'
+  }
+};
 
 export default ProfileView;

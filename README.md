@@ -22,7 +22,7 @@ Course: https://careerfoundry.com/
 
 Todos:
 - Add scoped search (add filter button next to search bar)
-- Add all user route features
+- Add all user route features (star icon to add to favs)
 - add a loader for requests.
 - redo router, separate it from main-view.
 - add option to filter search other keys.
