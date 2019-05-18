@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+
 // import Nav from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
 import { theMovieDBSearch, poster } from '../../../helpers/apiKey';
@@ -9,6 +11,7 @@ import Octicon, { Star, Zap } from '@githubprimer/octicons-react';
 import { addToFavorites } from '../../../helpers/movieAPI';
 
 const MovieCard = ({ movie, currentUser }) => {
+  const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [avgVote, setAvgVote] = useState('');
 
@@ -27,7 +30,17 @@ const MovieCard = ({ movie, currentUser }) => {
     return () => {};
   }, [movie.Title]);
 
-  const addToFavs = (username, movieId) => addToFavorites(username, movieId);
+  const onSubmit = (username, movieId) => {
+    setLoading(true);
+    addToFavorites(username, movieId)
+      .then(res => {
+        if (res.status === 200) {
+          setLoading(false);
+          // add async loading with redux and way to fetch data.
+        }
+      })
+      .catch(e => console.error('movie-card', e));
+  };
 
   return (
     <Card border="info">
@@ -57,9 +70,19 @@ const MovieCard = ({ movie, currentUser }) => {
         <Button
           variant="outline-info"
           className="ml-1"
-          onClick={() => addToFavs(currentUser.Username, movie._id)}
+          onClick={() => onSubmit(currentUser.Username, movie._id)}
         >
-          <Octicon icon={Star} size="small" verticalAlign="middle" />
+          {loading ? (
+            <Spinner
+              as="span"
+              animation="grow"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+          ) : (
+            <Octicon icon={Star} size="small" verticalAlign="middle" />
+          )}
         </Button>
       </Card.Body>
       <Card.Footer>
@@ -77,6 +100,7 @@ const styles = {
     height: '300px'
   }
 };
+
 MovieCard.propTypes = {
   movie: PropTypes.shape({
     Title: PropTypes.string

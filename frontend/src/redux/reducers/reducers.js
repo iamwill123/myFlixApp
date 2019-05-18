@@ -4,8 +4,38 @@ import {
   SET_SORT_COLUMN,
   SET_MOVIES,
   SET_USER,
-  SET_USERS
+  SET_USERS,
+  LOADING_START,
+  LOADING_FINISH,
+  LOADING_ERROR
 } from '../actions/actions';
+
+const asyncLoadingStarted = (state = false, action) => {
+  switch (action.type) {
+    case LOADING_START:
+      return action.value;
+    default:
+      return state;
+  }
+};
+
+const asyncLoadingFinished = (state = false, action) => {
+  switch (action.type) {
+    case LOADING_FINISH:
+      return action.value;
+    default:
+      return state;
+  }
+};
+
+const asyncLoadingError = (state = false, action) => {
+  switch (action.type) {
+    case LOADING_ERROR:
+      return action.value;
+    default:
+      return state;
+  }
+};
 
 const visibilityFilter = (state = '', action) => {
   switch (action.type) {
@@ -62,6 +92,9 @@ const users = (state = [], action) => {
 // };
 
 const moviesApp = combineReducers({
+  asyncLoadingStarted,
+  asyncLoadingFinished,
+  asyncLoadingError,
   visibilityFilter,
   sortColumn,
   movies,

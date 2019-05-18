@@ -26,11 +26,12 @@ const getUser = async (username, token) =>
     headers: { Authorization: `Bearer ${token}` }
   });
 
-  // figure this out, probably axios related
+// figure this out, probably axios related
 const addToFavorites = async (username, movieId) => {
   let token = await localStorage.getItem('token');
   return await axios.post(
     `${api['user']}/${username}/FavoriteMovies/${movieId}`,
+    null,
     {
       headers: { Authorization: `Bearer ${token}` }
     }
