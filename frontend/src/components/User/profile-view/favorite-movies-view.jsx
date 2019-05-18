@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 // import Nav from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
-import { unsplashPlaceholder } from '../../../helpers/placeholder';
+// import { unsplashPlaceholder } from '../../../helpers/placeholder';
 // import { isEmpty } from '../../../helpers/isEmpty';
 import { getMovieById } from '../../../helpers/movieAPI';
 import { isEmpty } from '../../../helpers/isEmpty';
