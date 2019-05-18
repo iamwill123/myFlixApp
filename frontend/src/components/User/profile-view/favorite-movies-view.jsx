@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -6,11 +6,23 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import { unsplashPlaceholder } from '../../../helpers/placeholder';
 // import { isEmpty } from '../../../helpers/isEmpty';
+import { getMovieById } from '../../../helpers/movieAPI';
+import { isEmpty } from '../../../helpers/isEmpty';
 
-const FavoriteMoviesView = ({ movie }) => {
+const FavoriteMoviesView = ({ movieId, token }) => {
+  const [movie, setMovie] = useState('');
+  useEffect(() => {
+    getMovieById(movieId, token).then(result => {
+      setMovie(result.data);
+    });
+    return () => {};
+  }, [movieId, token]);
+
+  if (isEmpty(movie)) return 'Loading...';
+
   return (
-    <Card border="dark">
-      <Card.Img variant="top" src={unsplashPlaceholder('', movie.Title)} />
+    <Card border="dark" key={movie._id}>
+      {/* <Card.Img variant="top" src={unsplashPlaceholder('', movie.Title)} /> */}
       <Card.Header as="h5">{movie.Title}</Card.Header>
       <Card.Body>
         <Link to={`/directors/${movie.Director.Name}`}>
@@ -37,8 +49,6 @@ const FavoriteMoviesView = ({ movie }) => {
 };
 
 FavoriteMoviesView.propTypes = {
-  movie: PropTypes.shape({
-    Title: PropTypes.string
-  }).isRequired
+  movieId: PropTypes.any.isRequired
 };
 export { FavoriteMoviesView };

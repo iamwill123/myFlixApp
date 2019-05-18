@@ -7,38 +7,63 @@ const api = {
   users: 'https://my-flix-db-11209.herokuapp.com/users'
 };
 
-const registerUser = (username, password, email, birthday) =>
-  axios.post(api['user'], {
+const registerUser = async (username, password, email, birthday) =>
+  await axios.post(api['user'], {
     Username: username,
     Password: password,
     Email: email,
     Birthday: birthday
   });
 
-const loginUser = (username, password) =>
-  axios.post(api['login'], {
+const loginUser = async (username, password) =>
+  await axios.post(api['login'], {
     Username: username,
     Password: password
   });
 
-const getUser = (username, token) =>
-  axios.get(`${api['user']}/${username}`, {
+const getUser = async (username, token) =>
+  await axios.get(`${api['user']}/${username}`, {
     headers: { Authorization: `Bearer ${token}` }
   });
 
-const getUsers = token =>
-  axios.get(api['users'], {
+  // figure this out, probably axios related
+const addToFavorites = async (username, movieId) => {
+  let token = await localStorage.getItem('token');
+  return await axios.post(
+    `${api['user']}/${username}/FavoriteMovies/${movieId}`,
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+};
+
+const getUsers = async token =>
+  await axios.get(api['users'], {
     headers: { Authorization: `Bearer ${token}` }
   });
 
-const deleteUser = (username, token) =>
-  axios.delete(`${api['user']}/${username}`, {
+const deleteUser = async (username, token) =>
+  await axios.delete(`${api['user']}/${username}`, {
     headers: { Authorization: `Bearer ${token}` }
   });
 
-const getMovies = token =>
-  axios.get(api['movies'], {
+const getMovies = async token =>
+  await axios.get(api['movies'], {
     headers: { Authorization: `Bearer ${token}` }
   });
 
-export { registerUser, loginUser, getUser, getUsers, getMovies, deleteUser };
+const getMovieById = async (movieId, token) =>
+  await axios.get(`${api['movies']}/${movieId}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+export {
+  registerUser,
+  loginUser,
+  getUser,
+  getUsers,
+  getMovies,
+  deleteUser,
+  addToFavorites,
+  getMovieById
+};

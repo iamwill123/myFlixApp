@@ -265,6 +265,7 @@ class MainView extends Component {
                         : users &&
                           users.find(u => u.Username === match.params.username)
                     }
+                    token={localStorage.getItem('token')}
                   />
                 );
               }}

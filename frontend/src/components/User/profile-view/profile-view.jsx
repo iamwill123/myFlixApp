@@ -29,7 +29,8 @@ class ProfileView extends Component {
   }
 
   render() {
-    if (isEmpty(this.props.user)) return 'Loading user profile...';
+    if (isEmpty(this.props.user) || isEmpty(this.props.token))
+      return 'Loading user profile...';
     const {
       user: { Username, Email, FavoriteMovies }
     } = this.props;
@@ -59,9 +60,16 @@ class ProfileView extends Component {
           </Card.Body>
         </Card>
         <CardColumns>
+          {/* search for the movie via id */}
           {!isEmpty(FavoriteMovies) ? (
-            FavoriteMovies.map(movie => {
-              return <FavoriteMoviesView movie={movie} key={movie._id} />;
+            FavoriteMovies.map(movieId => {
+              return (
+                <FavoriteMoviesView
+                  movieId={movieId}
+                  token={this.props.token}
+                  key={movieId}
+                />
+              );
             })
           ) : (
             <h2>Favorites list.</h2>

@@ -12,7 +12,7 @@ const getFirstKeyValueOfNestedObj = obj => Object.entries(obj)[0][1];
 
 // mapStateToProps
 const mapState = state => {
-  const { movies, visibilityFilter, sortColumn } = state;
+  const { user, movies, visibilityFilter, sortColumn } = state;
 
   let moviesToShow = movies.concat().sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) return -1;
@@ -34,11 +34,11 @@ const mapState = state => {
       );
     });
   }
-  return { movies: moviesToShow };
+  return { movies: moviesToShow, currentUser: user };
 };
 
 const MoviesList = props => {
-  const { movies } = props;
+  const { movies, currentUser } = props;
 
   if (!movies) return <p>loading...</p>;
   return (
@@ -47,7 +47,13 @@ const MoviesList = props => {
         <SortColumnDropdown />
         <CardColumns>
           {movies.map(movie => {
-            return <MovieCard movie={movie} key={movie._id} />;
+            return (
+              <MovieCard
+                currentUser={currentUser}
+                movie={movie}
+                key={movie._id}
+              />
+            );
           })}
         </CardColumns>
       </Col>

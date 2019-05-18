@@ -6,8 +6,9 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import { theMovieDBSearch, poster } from '../../../helpers/apiKey';
 import Octicon, { Star, Zap } from '@githubprimer/octicons-react';
+import { addToFavorites } from '../../../helpers/movieAPI';
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, currentUser }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [avgVote, setAvgVote] = useState('');
 
@@ -18,13 +19,15 @@ const MovieCard = ({ movie }) => {
           data: { results }
         } = result;
         let topResult = results[0];
-        console.log(topResult);
+        // console.log(topResult);
         setImageUrl(poster.loadSize('w400', topResult.poster_path));
         setAvgVote(topResult.vote_average);
       }
     });
     return () => {};
   }, [movie.Title]);
+
+  const addToFavs = (username, movieId) => addToFavorites(username, movieId);
 
   return (
     <Card border="info">
@@ -51,8 +54,12 @@ const MovieCard = ({ movie }) => {
         <Link to={`/movies/${movie._id}`}>
           <Button variant="outline-dark">Read more</Button>
         </Link>
-        <Button variant="outline-info" className="ml-1">
-          <Octicon icon={Star} size='small' verticalAlign='middle' />
+        <Button
+          variant="outline-info"
+          className="ml-1"
+          onClick={() => addToFavs(currentUser.Username, movie._id)}
+        >
+          <Octicon icon={Star} size="small" verticalAlign="middle" />
         </Button>
       </Card.Body>
       <Card.Footer>
