@@ -38,8 +38,8 @@ const mapState = state => {
 };
 
 const MoviesList = props => {
-  const { movies, currentUser } = props;
-
+  const { movies, currentUser, match } = props;
+  console.log('movie-list', match);
   if (!movies) return <p>loading...</p>;
   return (
     <Row>
@@ -52,6 +52,7 @@ const MoviesList = props => {
                 currentUser={currentUser}
                 movie={movie}
                 key={movie._id}
+                match={match}
               />
             );
           })}

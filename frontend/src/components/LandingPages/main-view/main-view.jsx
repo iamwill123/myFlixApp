@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setMovies, setUser, setUsers } from '../../../redux/actions/actions';
 
@@ -152,10 +152,10 @@ class MainView extends Component {
     const { movies, users, user } = this.props;
 
     return (
-      <Router>
-        <Container>
-          <GlobalNavbar user={user} onLoggedOut={this.onLoggedOut} />
-          <div className="main-view">
+      <Container>
+        <GlobalNavbar user={user} onLoggedOut={this.onLoggedOut} />
+        <div className="main-view">
+          <Switch>
             <Route
               exact
               path="/myFlixApp"
@@ -174,13 +174,13 @@ class MainView extends Component {
             <Route
               exact
               path="/movies"
-              render={() =>
+              render={({ match }) =>
                 isEmpty(movies) ? (
                   <div className="loading-view">
                     <p>Loading movies...</p>
                   </div>
                 ) : (
-                  <MoviesList />
+                  <MoviesList match={match} />
                 )
               }
             />
@@ -270,7 +270,15 @@ class MainView extends Component {
                 );
               }}
             />
-
+            <Route
+              render={({ location }) => (
+                <div>
+                  <h3>
+                    Error! No matches for <code>{location.pathname}</code>
+                  </h3>
+                </div>
+              )}
+            />
             <Row>
               {/* toast coming in next release */}
               {/* {toastMessage.show && (
@@ -289,9 +297,9 @@ class MainView extends Component {
                 </AlertView>
               )}
             </Row>
-          </div>
-        </Container>
-      </Router>
+          </Switch>
+        </div>
+      </Container>
     );
   }
 }
