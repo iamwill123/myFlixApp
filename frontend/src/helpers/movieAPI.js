@@ -26,12 +26,21 @@ const getUser = async (username, token) =>
     headers: { Authorization: `Bearer ${token}` }
   });
 
-// figure this out, probably axios related
 const addToFavorites = async (username, movieId) => {
   let token = await localStorage.getItem('token');
   return await axios.post(
     `${api['user']}/${username}/FavoriteMovies/${movieId}`,
     null,
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+};
+
+const removeFromFavorites = async (username, movieId) => {
+  let token = await localStorage.getItem('token');
+  return await axios.delete(
+    `${api['user']}/${username}/FavoriteMovies/${movieId}`,
     {
       headers: { Authorization: `Bearer ${token}` }
     }
@@ -66,5 +75,6 @@ export {
   getMovies,
   deleteUser,
   addToFavorites,
+  removeFromFavorites,
   getMovieById
 };

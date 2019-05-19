@@ -261,7 +261,7 @@ class MainView extends Component {
                   <ProfileView
                     user={
                       user === match.params.username
-                        ? user
+                        ? user && user
                         : users &&
                           users.find(u => u.Username === match.params.username)
                     }

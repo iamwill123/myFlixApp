@@ -21,15 +21,11 @@ Login:
 Course: https://careerfoundry.com/
 
 Todos:
+- Redo router, separate it from main-view.
+- Need to add realtime database, data hydration after post requests (graphql, socket.io, or 3rd party)
 - Add scoped search (add filter button next to search bar)
-- Add all user route features (star icon to add to favs)
-- add a loader for requests.
-- redo router, separate it from main-view.
-- add option to filter search other keys.
 - Add PropTypes to all components that receives props
-- Add UI to other endpoints
 - Add Redux middlewares
 
 Shortcuts:
-
 - ctrl + alt + L (auto console log once you highlight a variable)

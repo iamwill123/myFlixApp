@@ -8,9 +8,11 @@ import Spinner from 'react-bootstrap/Spinner';
 import { Link } from 'react-router-dom';
 import { theMovieDBSearch, poster } from '../../../helpers/apiKey';
 import Octicon, { Star, Zap } from '@githubprimer/octicons-react';
-import { addToFavorites } from '../../../helpers/movieAPI';
+import { addToFavorites, removeFromFavorites } from '../../../helpers/movieAPI';
+import TooltipView from '../../ReusableComponents/tooltip-view/tooltip-view';
 
 const MovieCard = ({ movie, currentUser }) => {
+  // console.log('TCL: MovieCard -> currentUser', currentUser);
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [avgVote, setAvgVote] = useState('');
@@ -30,7 +32,7 @@ const MovieCard = ({ movie, currentUser }) => {
     return () => {};
   }, [movie.Title]);
 
-  const onSubmit = (username, movieId) => {
+  const onAddToFavorite = (username, movieId) => {
     setLoading(true);
     addToFavorites(username, movieId)
       .then(res => {
@@ -39,7 +41,25 @@ const MovieCard = ({ movie, currentUser }) => {
           // add async loading with redux and way to fetch data.
         }
       })
-      .catch(e => console.error('movie-card', e));
+      .catch(e => {
+        setLoading(false);
+        console.error('onAddToFavorite', e);
+      });
+  };
+
+  const onRemoveFavorite = (username, movieId) => {
+    setLoading(true);
+    removeFromFavorites(username, movieId)
+      .then(res => {
+        if (res.status === 200) {
+          setLoading(false);
+          // add async loading with redux and way to fetch data.
+        }
+      })
+      .catch(e => {
+        setLoading(false);
+        console.error('onAddToFavorite', e);
+      });
   };
 
   return (
@@ -67,23 +87,50 @@ const MovieCard = ({ movie, currentUser }) => {
         <Link to={`/movies/${movie._id}`}>
           <Button variant="outline-dark">Read more</Button>
         </Link>
-        <Button
-          variant="outline-info"
-          className="ml-1"
-          onClick={() => onSubmit(currentUser.Username, movie._id)}
-        >
-          {loading ? (
-            <Spinner
-              as="span"
-              animation="grow"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-            />
-          ) : (
-            <Octicon icon={Star} size="small" verticalAlign="middle" />
-          )}
-        </Button>
+        {currentUser.FavoriteMovies.find(m => m === movie._id) ? (
+          <TooltipView
+            placement={'right'}
+            tooltipText={'Remove from favorites'}
+          >
+            <Button
+              variant="outline-danger"
+              className="ml-1"
+              onClick={() => onRemoveFavorite(currentUser.Username, movie._id)}
+            >
+              {loading ? (
+                <Spinner
+                  as="span"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : (
+                <Octicon icon={Zap} size="small" verticalAlign="middle" />
+              )}
+            </Button>
+          </TooltipView>
+        ) : (
+          <TooltipView placement={'bottom'} tooltipText={'Add to favorites'}>
+            <Button
+              variant="outline-info"
+              className="ml-1"
+              onClick={() => onAddToFavorite(currentUser.Username, movie._id)}
+            >
+              {loading ? (
+                <Spinner
+                  as="span"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : (
+                <Octicon icon={Star} size="small" verticalAlign="middle" />
+              )}
+            </Button>
+          </TooltipView>
+        )}
       </Card.Body>
       <Card.Footer>
         {/* <small className="text-muted">Last updated 3 mins ago</small> */}
