@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setMovies, setUser, setUsers } from '../../../redux/actions/actions';
 
@@ -156,6 +156,7 @@ class MainView extends Component {
         <GlobalNavbar user={user} onLoggedOut={this.onLoggedOut} />
         <div className="main-view">
           <Switch>
+            <Route exact path="/" render={() => <Redirect to="/myFlixApp" />} />
             <Route
               exact
               path="/myFlixApp"

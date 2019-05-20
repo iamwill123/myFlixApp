@@ -1,7 +1,7 @@
 import React from 'react';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import PropTypes from 'prop-types';
 import { isEmpty } from '../../../helpers/isEmpty';
@@ -51,9 +51,9 @@ const WelcomeView = ({
           />
         </ButtonToolbar>
       ) : (
-        <Link to={`/movies`}>
+        <NavLink to={`/movies`}>
           <Button variant="outline-primary">View Movies</Button>
-        </Link>
+        </NavLink>
       )}
     </Jumbotron>
   );

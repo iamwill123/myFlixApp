@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 // import Nav from 'react-bootstrap/Nav';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 // import { unsplashPlaceholder } from '../../../helpers/placeholder';
 // import { isEmpty } from '../../../helpers/isEmpty';
 import { getMovieById } from '../../../helpers/movieAPI';
@@ -25,20 +25,20 @@ const FavoriteMoviesView = ({ movieId, token }) => {
       {/* <Card.Img variant="top" src={unsplashPlaceholder('', movie.Title)} /> */}
       <Card.Header as="h5">{movie.Title}</Card.Header>
       <Card.Body>
-        <Link to={`/directors/${movie.Director.Name}`}>
+        <NavLink to={`/directors/${movie.Director.Name}`}>
           <Card.Text style={{ marginBottom: '5%' }}>
             {movie.Director.Name}
           </Card.Text>
-        </Link>
+        </NavLink>
         <Card.Text style={{ marginBottom: '0' }}>{movie.Description}</Card.Text>
-        <Link to={`/genres/${movie.Genre.Name}`}>
+        <NavLink to={`/genres/${movie.Genre.Name}`}>
           <Card.Text style={{ marginBottom: '5%' }}>
             <small className="text-muted">#{movie.Genre.Name}</small>
           </Card.Text>
-        </Link>
-        <Link to={`/movies/${movie._id}`}>
+        </NavLink>
+        <NavLink to={`/movies/${movie._id}`}>
           <Button variant="outline-dark">Read more</Button>
-        </Link>
+        </NavLink>
       </Card.Body>
       <Card.Footer>
         {/* <small className="text-muted">Last updated 3 mins ago</small> */}
