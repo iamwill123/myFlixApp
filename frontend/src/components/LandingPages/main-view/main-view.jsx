@@ -22,6 +22,7 @@ import AlertView from '../../ReusableComponents/alert-view/alert-view';
 import Row from 'react-bootstrap/Row';
 
 import './main-view.scss';
+import { localStore } from '../../../helpers/localStorageClient';
 
 const mapState = ({ movies, user, users }) => ({
   movies,
@@ -46,8 +47,8 @@ class MainView extends Component {
 
   async componentDidMount() {
     try {
-      let accessToken = await localStorage.getItem('token');
-      if (accessToken !== null) {
+      const { token } = localStore;
+      if (token !== null) {
         await this.getCurrentUser();
         await this.getMoviesList();
         await this.getUsersList();
@@ -58,48 +59,30 @@ class MainView extends Component {
   }
 
   async getCurrentUser() {
-    try {
-      let username = await localStorage.getItem('username');
-      let token = await localStorage.getItem('token');
-      let getCurrentUser = await getUser(username, token);
-      const { status, data } = getCurrentUser;
-      if (status === 201) {
-        this.props.setUser(data);
-      }
-    } catch (error) {
-      console.log('getCurrentUser', error);
-    }
+    const { token, username } = localStore;
+    let getCurrentUser = await getUser(username, token);
+    this.props.setUser(getCurrentUser);
   }
 
   async getMoviesList() {
-    try {
-      let token = await localStorage.getItem('token');
-      let getMoviesList = await getMovies(token);
-      const { status, data } = getMoviesList;
-      if (status === 201) {
-        this.props.setMovies(data);
-      }
-    } catch (error) {
-      console.log('getMovies', error);
-    }
+    const { token } = localStore;
+    let getMoviesList = await getMovies(token);
+    this.props.setMovies(getMoviesList);
   }
 
   async getUsersList() {
-    try {
-      let token = await localStorage.getItem('token');
-      let getUsersList = await getUsers(token);
-      const { status, data } = getUsersList;
-      if (status === 201) {
-        this.props.setUsers(data);
-      }
-    } catch (error) {
-      console.log('getUsers', error);
-    }
+    const { token } = localStore;
+    let getUsersList = await getUsers(token);
+    this.props.setUsers(getUsersList);
   }
 
   onLoggedIn = authData => {
-    localStorage.setItem('token', authData.token);
-    localStorage.setItem('username', authData.user.Username);
+    const {
+      token,
+      user: { Username }
+    } = authData;
+    localStore.setTokenAndUsername(token, Username);
+    // redux store
     this.props.setUser(authData.user);
     this.setState(
       {
@@ -131,9 +114,8 @@ class MainView extends Component {
 
   onLoggedOut = () => {
     // temp logout method
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    setTimeout(() => (window.location.href = '/myFlixApp'), 0);
+    localStore.removeTokenAndUsername();
+    setTimeout(() => (window.location.href = '/'), 0);
   };
 
   onModalClose = component => () => {
@@ -266,7 +248,7 @@ class MainView extends Component {
                         : users &&
                           users.find(u => u.Username === match.params.username)
                     }
-                    token={localStorage.getItem('token')}
+                    token={localStore.token}
                   />
                 );
               }}

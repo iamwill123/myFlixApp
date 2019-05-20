@@ -13,7 +13,7 @@ const FavoriteMoviesView = ({ movieId, token }) => {
   const [movie, setMovie] = useState('');
   useEffect(() => {
     getMovieById(movieId, token).then(result => {
-      setMovie(result.data);
+      setMovie(result);
     });
     return () => {};
   }, [movieId, token]);

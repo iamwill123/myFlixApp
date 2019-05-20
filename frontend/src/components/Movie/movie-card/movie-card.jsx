@@ -6,7 +6,7 @@ import Spinner from 'react-bootstrap/Spinner';
 
 // import Nav from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
-import { theMovieDBSearch, poster } from '../../../helpers/apiKey';
+import { theMovieDBSearch, poster, checkStatus } from '../../../helpers/apiKey';
 import Octicon, { Star, Zap } from '@githubprimer/octicons-react';
 import { addToFavorites, removeFromFavorites } from '../../../helpers/movieAPI';
 import TooltipView from '../../ReusableComponents/tooltip-view/tooltip-view';
@@ -18,8 +18,9 @@ const MovieCard = ({ movie, currentUser }) => {
   const [avgVote, setAvgVote] = useState('');
 
   useEffect(() => {
-    theMovieDBSearch(movie.Title).then(result => {
-      if (result.status === 200) {
+    theMovieDBSearch(movie.Title)
+      .then(checkStatus)
+      .then(result => {
         const {
           data: { results }
         } = result;
@@ -27,19 +28,18 @@ const MovieCard = ({ movie, currentUser }) => {
         // console.log(topResult);
         setImageUrl(poster.loadSize('w400', topResult.poster_path));
         setAvgVote(topResult.vote_average);
-      }
-    });
+      });
     return () => {};
   }, [movie.Title]);
 
   const onAddToFavorite = (username, movieId) => {
     setLoading(true);
     addToFavorites(username, movieId)
+      .then(checkStatus)
       .then(res => {
-        if (res.status === 200) {
-          setLoading(false);
-          // add async loading with redux and way to fetch data.
-        }
+        console.log('added to fav', res);
+        setLoading(false);
+        // add async loading with redux and way to fetch data.
       })
       .catch(e => {
         setLoading(false);
@@ -50,11 +50,11 @@ const MovieCard = ({ movie, currentUser }) => {
   const onRemoveFavorite = (username, movieId) => {
     setLoading(true);
     removeFromFavorites(username, movieId)
+      .then(checkStatus)
       .then(res => {
-        if (res.status === 200) {
-          setLoading(false);
-          // add async loading with redux and way to fetch data.
-        }
+        console.log('removed from fav', res);
+        setLoading(false);
+        // add async loading with redux and way to fetch data.
       })
       .catch(e => {
         setLoading(false);
