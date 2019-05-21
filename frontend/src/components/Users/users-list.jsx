@@ -13,18 +13,19 @@ class UserList extends Component {
   render() {
     const { users } = this.props;
     // console.log(users);
-    if (!users) return null;
+    if (!users) return 'Loading users...';
+    const usersList = user => (
+      <div key={user._id}>
+        <ul>
+          <li>{user.Username}</li>
+          <li>{user.Email}</li>
+        </ul>
+      </div>
+    );
     return (
       <>
         <h1>Users list route</h1>
-        {users.map(user => (
-          <div key={user._id}>
-            <ul>
-              <li>{user.Username}</li>
-              <li>{user.Email}</li>
-            </ul>
-          </div>
-        ))}
+        {users.map(usersList)}
       </>
     );
   }

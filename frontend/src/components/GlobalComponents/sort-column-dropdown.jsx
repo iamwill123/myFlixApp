@@ -20,6 +20,11 @@ const sortColumnsBy = [
 ];
 
 const SortColumnDropdown = props => {
+  const names = name => (
+    <Dropdown.Item key={name} eventKey={name} as="button">
+      {name}
+    </Dropdown.Item>
+  );
   return (
     <DropdownButton
       drop={'left'}
@@ -32,11 +37,7 @@ const SortColumnDropdown = props => {
       onSelect={e => props.setSortColumn(e)}
       style={{ textAlign: 'right' }}
     >
-      {sortColumnsBy.map(name => (
-        <Dropdown.Item key={name} eventKey={name} as="button">
-          {name}
-        </Dropdown.Item>
-      ))}
+      {sortColumnsBy.map(names)}
     </DropdownButton>
   );
 };

@@ -13,16 +13,16 @@ const getFirstKeyValueOfNestedObj = obj => Object.entries(obj)[0][1];
 // mapStateToProps
 const mapState = state => {
   const { user, movies, visibilityFilter, sortColumn } = state;
-
-  let moviesToShow = movies.concat().sort((a, b) => {
+  const aToZAcendingOrder = (a, b) => {
     if (a[sortColumn] < b[sortColumn]) return -1;
     if (a[sortColumn] > b[sortColumn]) return 1;
     return 0;
-  });
+  };
+  let moviesToShow = movies.concat().sort(aToZAcendingOrder);
 
   // filter search according to sortColumn result.
   if (visibilityFilter !== '') {
-    moviesToShow = moviesToShow.filter(movie => {
+    const bySortSelection = movie => {
       if (typeof movie[sortColumn] === 'object') {
         return getFirstKeyValueOfNestedObj(movie[sortColumn])
           .toLowerCase()
@@ -32,7 +32,8 @@ const mapState = state => {
         movie[sortColumn].includes(visibilityFilter) ||
         movie[sortColumn].toLowerCase().includes(visibilityFilter)
       );
-    });
+    };
+    moviesToShow = moviesToShow.filter(bySortSelection);
   }
   return { movies: moviesToShow, currentUser: user };
 };
@@ -40,24 +41,25 @@ const mapState = state => {
 const MoviesList = props => {
   // console.log(props);
   const { movies, currentUser, match } = props;
-  console.log('movie-list', match);
+  // console.log('movie-list', match);
   if (!movies) return <p>loading...</p>;
+
+  const movieCard = movie => {
+    return (
+      <MovieCard
+        currentUser={currentUser}
+        movie={movie}
+        key={movie._id}
+        match={match}
+      />
+    );
+  };
+
   return (
     <Row>
       <Col>
         <SortColumnDropdown />
-        <CardColumns>
-          {movies.map(movie => {
-            return (
-              <MovieCard
-                currentUser={currentUser}
-                movie={movie}
-                key={movie._id}
-                match={match}
-              />
-            );
-          })}
-        </CardColumns>
+        <CardColumns>{movies.map(movieCard)}</CardColumns>
       </Col>
     </Row>
   );
