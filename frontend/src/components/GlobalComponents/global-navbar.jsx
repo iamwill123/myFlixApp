@@ -1,18 +1,27 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-// import Button from 'react-bootstrap/Button';
-// import Form from 'react-bootstrap/Form';
-// import FormControl from 'react-bootstrap/FormControl';
-import { NavLink } from 'react-router-dom';
+
+import { NavLink, withRouter } from 'react-router-dom';
 import VisibilityFilterInput from './visibility-filter-input';
 import PropTypes from 'prop-types';
-import { isEmpty } from '../../helpers/isEmpty';
 
+import { localStore } from '../../helpers/localStorageClient';
 import './global.scss';
 
-const GlobalNavbar = ({ user, onLoggedOut }) => {
+const mapState = ({ user }) => ({
+  user
+});
+
+const GlobalNavbar = ({ user, location }) => {
+  const onLoggedOut = () => {
+    localStore.removeTokenAndUsername();
+    setTimeout(() => (window.location.href = '/'), 0);
+  };
+
   return (
     <Navbar
       collapseOnSelect
@@ -26,35 +35,41 @@ const GlobalNavbar = ({ user, onLoggedOut }) => {
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
-        {!isEmpty(user) && (
-          <Nav className="mr-auto">
-            <Nav.Link as={NavLink} to={`/users`} exact>
-              People
-            </Nav.Link>
-            <NavDropdown
-              title={`👤 ${user.Username}`}
-              id="collasible-nav-dropdown"
-            >
-              <NavDropdown.Item
-                as={NavLink}
-                to={`/profile/${user.Username}`}
-                exact
+        {localStore.isLoggedIn() && (
+          <>
+            <Nav className="mr-auto">
+              <Nav.Link as={NavLink} to={`/movies`} exact>
+                Movies
+              </Nav.Link>
+              <Nav.Link as={NavLink} to={`/users`} exact>
+                People
+              </Nav.Link>
+              <NavDropdown
+                title={`👤 ${user.Username}`}
+                id="collasible-nav-dropdown"
               >
-                Profile
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Favorites</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Settings</NavDropdown.Item>
-              <NavDropdown.Divider />
-              {!isEmpty(user) && (
+                <NavDropdown.Item
+                  as={NavLink}
+                  to={`/profile/${user.Username}`}
+                  exact
+                >
+                  Profile
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">
+                  Favorites
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.3">Settings</NavDropdown.Item>
+                <NavDropdown.Divider />
+
                 <NavDropdown.Item onClick={onLoggedOut}>
                   Log out
                 </NavDropdown.Item>
-              )}
-            </NavDropdown>
-          </Nav>
-        )}
+              </NavDropdown>
+            </Nav>
 
-        {!isEmpty(user) && <VisibilityFilterInput />}
+            {location.pathname === '/movies' && <VisibilityFilterInput />}
+          </>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );
@@ -64,4 +79,4 @@ GlobalNavbar.propTypes = {
   user: PropTypes.any
 };
 
-export { GlobalNavbar };
+export default withRouter(connect(mapState)(GlobalNavbar));

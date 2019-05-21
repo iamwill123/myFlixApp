@@ -26,6 +26,7 @@ Todos:
 - Add scoped search (add filter button next to search bar)
 - Add PropTypes to all components that receives props
 - Add Redux middlewares
+- Put movie posters put into redux store
 
 Shortcuts:
 - ctrl + alt + L (auto console log once you highlight a variable)

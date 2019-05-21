@@ -1,13 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 // import { Link } from 'react-router-dom';
+import { isEmpty } from '../../../helpers/isEmpty';
 
-const GenreView = ({ movie }) => {
+const GenreView = ({ movies, history, match }) => {
+  if (isEmpty(movies)) return <p>loading movie...</p>;
+  let movie = movies.find(m => m.Genre.Name === match.params.name);
+
   const { Genre } = movie;
+
   const goBack = () => {
-    window.history.back();
+    history.goBack();
   };
   return (
     <Card>
@@ -26,8 +33,9 @@ const GenreView = ({ movie }) => {
 };
 
 GenreView.propTypes = {
-  movie: PropTypes.shape({
-    Genre: PropTypes.object
-  }).isRequired
+  movies: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired
 };
-export { GenreView };
+
+export default connect(({ movies }) => ({ movies }))(GenreView);

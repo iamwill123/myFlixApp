@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-// import { BrowserRouter as Router, Route } from 'react-router-dom';
-// import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import CardColumns from 'react-bootstrap/CardColumns';
@@ -12,7 +13,16 @@ import { unsplashPlaceholder } from '../../../helpers/placeholder';
 import { deleteUser } from '../../../helpers/movieAPI';
 import { isEmpty } from '../../../helpers/isEmpty';
 import { FavoriteMoviesView } from './favorite-movies-view';
+import { localStore } from '../../../helpers/localStorageClient';
 
+const mapState = ({ user, users }) => {
+  const token = localStore.token;
+  return {
+    user,
+    users,
+    token
+  };
+};
 class ProfileView extends Component {
   state = {};
 
@@ -20,8 +30,7 @@ class ProfileView extends Component {
     deleteUser(username)
       .then(res => {
         console.log(res);
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        localStore.removeTokenAndUsername();
       })
       .catch(e => {
         console.log(e);
@@ -29,20 +38,25 @@ class ProfileView extends Component {
   }
 
   render() {
-    if (isEmpty(this.props.user) || isEmpty(this.props.token))
+    if (
+      isEmpty(this.props.user) ||
+      isEmpty(this.props.token) ||
+      isEmpty(this.props.users)
+    )
       return 'Loading user profile...';
 
-    const {
-      user: { Username, Email, FavoriteMovies }
-    } = this.props;
+    const { user, users, token, match } = this.props;
+
+    const currentUser =
+      user === match.params.username
+        ? user
+        : users.find(u => u.Username === match.params.username);
+
+    const { Username, Email, FavoriteMovies } = currentUser;
 
     const favorites = movieId => {
       return (
-        <FavoriteMoviesView
-          movieId={movieId}
-          token={this.props.token}
-          key={movieId}
-        />
+        <FavoriteMoviesView movieId={movieId} token={token} key={movieId} />
       );
     };
 
@@ -92,4 +106,12 @@ const styles = {
   }
 };
 
-export default ProfileView;
+ProfileView.propTypes = {
+  user: PropTypes.object.isRequired,
+  users: PropTypes.array,
+  token: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired
+};
+
+export default connect(mapState)(ProfileView);

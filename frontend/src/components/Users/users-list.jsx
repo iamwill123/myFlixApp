@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 // import Container from 'react-bootstrap/Container';
@@ -11,9 +13,9 @@ class UserList extends Component {
   state = {};
 
   render() {
+    if (!this.props.users) return 'Loading users...';
     const { users } = this.props;
-    // console.log(users);
-    if (!users) return 'Loading users...';
+
     const usersList = user => (
       <div key={user._id}>
         <ul>
@@ -31,4 +33,4 @@ class UserList extends Component {
   }
 }
 
-export default UserList;
+export default connect(({ users }) => ({ users }))(UserList);

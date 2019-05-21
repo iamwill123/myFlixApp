@@ -10,7 +10,7 @@ import { isEmpty } from '../../../helpers/isEmpty';
 const DirectorView = ({ movies, history, match }) => {
   if (isEmpty(movies)) return <p>loading movie...</p>;
   let movie = movies.find(m => m.Director.Name === match.params.name);
-  console.log(movie);
+
   const { Director } = movie;
 
   const goBack = () => {
