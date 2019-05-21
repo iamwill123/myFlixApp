@@ -11,6 +11,10 @@ class localStorageClient {
     }
   }
 
+  isLoggedIn() {
+    return !!this.token;
+  }
+
   setTokenAndUsername(token, username) {
     this.token = token;
     this.username = username;

@@ -38,6 +38,7 @@ const mapState = state => {
 };
 
 const MoviesList = props => {
+  // console.log(props);
   const { movies, currentUser, match } = props;
   console.log('movie-list', match);
   if (!movies) return <p>loading...</p>;

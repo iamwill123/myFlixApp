@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { setMovies, setUser, setUsers } from '../../../redux/actions/actions';
 
 import { WelcomeView } from '../welcome-view/welcome-view';
-import { DirectorView } from '../../Movie/director-view/director-view';
+import DirectorView from '../../Movie/director-view/director-view';
 import { GenreView } from '../../Movie/genre-view/genre-view';
-import { MovieView } from '../../Movie/movie-view/movie-view';
+import MovieView from '../../Movie/movie-view/movie-view';
 import MoviesList from '../../Movie/movies-list/movies-list';
 import ProfileView from '../../User/profile-view/profile-view';
 import { GlobalNavbar } from '../../GlobalComponents/global-navbar';
@@ -23,6 +23,7 @@ import Row from 'react-bootstrap/Row';
 
 import './main-view.scss';
 import { localStore } from '../../../helpers/localStorageClient';
+import PrivateRoute from '../../GlobalComponents/private-route';
 
 const mapState = ({ movies, user, users }) => ({
   movies,
@@ -132,7 +133,7 @@ class MainView extends Component {
   render() {
     const { modalShow, toastMessage } = this.state;
     const { movies, users, user } = this.props;
-
+    console.log(this.props);
     return (
       <Container>
         <GlobalNavbar user={user} onLoggedOut={this.onLoggedOut} />
@@ -154,52 +155,10 @@ class MainView extends Component {
               )}
             />
 
-            <Route
-              exact
-              path="/movies"
-              render={({ match }) =>
-                isEmpty(movies) ? (
-                  <div className="loading-view">
-                    <p>Loading movies...</p>
-                  </div>
-                ) : (
-                  <MoviesList match={match} />
-                )
-              }
-            />
+            <PrivateRoute path="/movies" component={MoviesList} exact />
 
-            <Route
-              path="/movies/:movieId"
-              render={({ match }) =>
-                isEmpty(movies) ? (
-                  <div className="loading-view">
-                    <p>Loading the movie...</p>
-                  </div>
-                ) : (
-                  <MovieView
-                    movie={movies.find(m => m._id === match.params.movieId)}
-                  />
-                )
-              }
-            />
-            <Route
-              path="/directors/:name"
-              render={({ match }) => {
-                if (isEmpty(movies))
-                  return (
-                    <div className="loading-view">
-                      <p>Loading the director...</p>
-                    </div>
-                  );
-                return (
-                  <DirectorView
-                    movie={movies.find(
-                      m => m.Director.Name === match.params.name
-                    )}
-                  />
-                );
-              }}
-            />
+            <PrivateRoute path="/movies/:movieId" component={MovieView} />
+            <PrivateRoute path="/directors/:name" component={DirectorView} />
             <Route
               exact
               path="/genres/:name"

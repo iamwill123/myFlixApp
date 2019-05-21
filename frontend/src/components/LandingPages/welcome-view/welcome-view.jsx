@@ -18,7 +18,10 @@ const WelcomeView = ({
 }) => {
   return (
     <Jumbotron>
-      <h1>Welcome to movie.db</h1>
+      {/* https://reactjs.org/docs/react-api.html#reactfragment */}
+      <React.Fragment>
+        <h1>Welcome to movie.db</h1>
+      </React.Fragment>
       <p>
         Hack up furballs rub butt on table stretch, and lick butt. Go into a
         room to decide you didn't want to be in there anyway put butt in owner's

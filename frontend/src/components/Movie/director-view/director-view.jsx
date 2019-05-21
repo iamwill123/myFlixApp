@@ -1,14 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 // import { Link } from 'react-router-dom';
+import { isEmpty } from '../../../helpers/isEmpty';
 
-const DirectorView = ({ movie }) => {
+const DirectorView = ({ movies, history, match }) => {
+  if (isEmpty(movies)) return <p>loading movie...</p>;
+  let movie = movies.find(m => m.Director.Name === match.params.name);
+  console.log(movie);
   const { Director } = movie;
 
   const goBack = () => {
-    window.history.back();
+    history.goBack();
   };
 
   return (
@@ -28,8 +34,8 @@ const DirectorView = ({ movie }) => {
 };
 
 DirectorView.propTypes = {
-  movie: PropTypes.shape({
-    Director: PropTypes.object
-  }).isRequired
+  movies: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired
 };
-export { DirectorView };
+export default connect(({ movies }) => ({ movies }))(DirectorView);
