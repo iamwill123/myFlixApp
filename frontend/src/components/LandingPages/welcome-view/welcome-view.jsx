@@ -1,15 +1,15 @@
 import React from 'react';
+
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
 import { NavLink } from 'react-router-dom';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import PropTypes from 'prop-types';
-import { isEmpty } from '../../../helpers/isEmpty';
 import { RegistrationModal } from '../../User/registration-view/registration-modal';
 import { LoginModal } from '../../User/login-view/login-modal';
+import { localStore } from '../../../helpers/localStorageClient';
 
 const WelcomeView = ({
-  user,
   modalShow,
   onModalClose,
   onModalShow,
@@ -37,7 +37,13 @@ const WelcomeView = ({
         outside.
       </p>
 
-      {isEmpty(user) ? (
+      {localStore.isLoggedIn() ? (
+        <>
+          <NavLink to={`/movies`}>
+            <Button variant="outline-primary">View Movies</Button>
+          </NavLink>
+        </>
+      ) : (
         <ButtonToolbar>
           <LoginModal
             onModalShow={onModalShow('login')}
@@ -53,10 +59,6 @@ const WelcomeView = ({
             onRegister={user => onRegister(user)}
           />
         </ButtonToolbar>
-      ) : (
-        <NavLink to={`/movies`}>
-          <Button variant="outline-primary">View Movies</Button>
-        </NavLink>
       )}
     </Jumbotron>
   );
@@ -71,4 +73,4 @@ WelcomeView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired
 };
 
-export { WelcomeView };
+export default WelcomeView;

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setMovies, setUser, setUsers } from '../../../redux/actions/actions';
 
-import { WelcomeView } from '../welcome-view/welcome-view';
+import WelcomeView from '../welcome-view/welcome-view';
 import DirectorView from '../../Movie/director-view/director-view';
 import { GenreView } from '../../Movie/genre-view/genre-view';
 import MovieView from '../../Movie/movie-view/movie-view';
@@ -130,10 +130,17 @@ class MainView extends Component {
       this.setState({ modalShow: { register: true } });
   };
 
+  redirectPath = () => {
+    console.log(this.props);
+    const locationState = this.props.location.state;
+    const pathname =
+      locationState && locationState.from && locationState.from.pathname;
+    return pathname || '/myFlixApp';
+  };
   render() {
     const { modalShow, toastMessage } = this.state;
     const { movies, users, user } = this.props;
-    console.log(this.props);
+
     return (
       <Container>
         <GlobalNavbar user={user} onLoggedOut={this.onLoggedOut} />
@@ -145,7 +152,6 @@ class MainView extends Component {
               path="/myFlixApp"
               render={() => (
                 <WelcomeView
-                  user={user}
                   modalShow={modalShow}
                   onModalClose={this.onModalClose}
                   onModalShow={this.onModalShow}
@@ -154,9 +160,7 @@ class MainView extends Component {
                 />
               )}
             />
-
             <PrivateRoute path="/movies" component={MoviesList} exact />
-
             <PrivateRoute path="/movies/:movieId" component={MovieView} />
             <PrivateRoute path="/directors/:name" component={DirectorView} />
             <Route
@@ -176,7 +180,6 @@ class MainView extends Component {
                 );
               }}
             />
-
             <Route
               path="/users"
               render={() => {
@@ -189,7 +192,6 @@ class MainView extends Component {
                 return <UserList users={users} />;
               }}
             />
-
             <Route
               path="/profile/:username"
               render={({ match }) => {
@@ -212,6 +214,7 @@ class MainView extends Component {
                 );
               }}
             />
+            <Redirect to={this.redirectPath()} />
             <Route
               render={({ location }) => (
                 <div>
@@ -246,7 +249,9 @@ class MainView extends Component {
   }
 }
 // connect(mapStateToProps, mapDispatchToProps, mergeProps, options)
-export default connect(
-  mapState,
-  actions
-)(MainView);
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(MainView)
+);
