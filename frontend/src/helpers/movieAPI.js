@@ -83,6 +83,32 @@ const getUsers = async token => {
   }
 };
 
+const updateUser = async (username, email, birthday, password) => {
+  try {
+    let token = await localStorage.getItem('token');
+    let updatedUser = await axios.put(
+      `${baseURL}${endpoints['user']}/${username}`,
+      {
+        Username: username,
+        Email: email,
+        Birthday: birthday,
+        Password: password
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
+    let response = await checkStatus(updatedUser);
+    console.log(response);
+    const { status } = response;
+    if (status === 200) {
+      return status;
+    }
+  } catch (error) {
+    console.log('updateUser', error);
+  }
+};
+
 const deleteUser = async (username, token) =>
   await axios.delete(`${baseURL}${endpoints['user']}/${username}`, {
     headers: { Authorization: `Bearer ${token}` }
@@ -118,9 +144,10 @@ export {
   registerUser,
   loginUser,
   getUser,
+  updateUser,
+  deleteUser,
   getUsers,
   getMovies,
-  deleteUser,
   addToFavorites,
   removeFromFavorites,
   getMovieById

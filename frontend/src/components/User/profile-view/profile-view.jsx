@@ -14,6 +14,7 @@ import { deleteUser } from '../../../helpers/movieAPI';
 import { isEmpty } from '../../../helpers/isEmpty';
 import { FavoriteMoviesView } from './favorite-movies-view';
 import { localStore } from '../../../helpers/localStorageClient';
+import { UpdateUserModal } from '../update-user-view.js/update-user-modal';
 
 const mapState = ({ user, users }) => {
   const token = localStore.token;
@@ -24,7 +25,25 @@ const mapState = ({ user, users }) => {
   };
 };
 class ProfileView extends Component {
-  state = {};
+  state = {
+    modalShow: {
+      updateProfile: false
+    }
+  };
+
+  onModalClose = component => () => {
+    component === 'updateProfile' &&
+      this.setState({ modalShow: { updateProfile: false } });
+  };
+
+  onModalShow = component => () => {
+    component === 'updateProfile' &&
+      this.setState({ modalShow: { updateProfile: true } });
+  };
+
+  onUpdate = () => {
+    setTimeout(this.onModalClose('updateProfile'), 0);
+  };
 
   onHandleUserDelete(username) {
     deleteUser(username)
@@ -76,6 +95,14 @@ class ProfileView extends Component {
             <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
             <ListGroupItem>Vestibulum at eros</ListGroupItem>
           </ListGroup>
+          <Card.Body style={styles.updateAccountBtnWrapper}>
+            <UpdateUserModal
+              onModalShow={this.onModalShow('updateProfile')}
+              modalShow={this.state.modalShow.updateProfile}
+              onModalClose={this.onModalClose('updateProfile')}
+              onUpdate={this.onUpdate}
+            />
+          </Card.Body>
           <Card.Body style={styles.deleteAccountBtnWrapper}>
             <Button
               variant="danger"
@@ -101,6 +128,9 @@ class ProfileView extends Component {
 }
 
 const styles = {
+  updateAccountBtnWrapper: {
+    textAlign: 'left'
+  },
   deleteAccountBtnWrapper: {
     textAlign: 'right'
   }
