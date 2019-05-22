@@ -11,7 +11,11 @@ const express = require('express'),
   User = Models.User;
 
 // CORS setup
-let allowedOrigins = ['http://localhost:1234', 'http://localhost:3000', 'https://iamwill123.github.io'];
+let allowedOrigins = [
+  'http://localhost:1234',
+  'http://localhost:3000',
+  'https://iamwill123.github.io'
+];
 const configs = {
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
@@ -255,21 +259,19 @@ app.put(
   '/user/:Username',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    User.update(
+    User.findAndModify(
       {
-        Username: req.params.Username
-      },
-      {
-        $set: {
+        query: {
+          Username: req.params.Username
+        },
+        update: {
           Username: req.body.Username,
           Password: req.body.Password,
           Email: req.body.Email,
           Birthday: req.body.Birthday
-        }
-      },
-      // {
-      //   new: true
-      // }, // This line makes sure that the updated document is returned
+        },
+        new: true
+      }, // This line makes sure that the updated document is returned
       (err, updatedUser) => {
         if (err) {
           console.error(err);
@@ -281,6 +283,36 @@ app.put(
     );
   }
 );
+// app.put(
+//   '/user/:Username',
+//   passport.authenticate('jwt', { session: false }),
+//   (req, res) => {
+//     User.update(
+//       {
+//         Username: req.params.Username
+//       },
+//       {
+//         $set: {
+//           Username: req.body.Username,
+//           Password: req.body.Password,
+//           Email: req.body.Email,
+//           Birthday: req.body.Birthday
+//         }
+//       },
+//       // {
+//       //   new: true
+//       // }, // This line makes sure that the updated document is returned
+//       (err, updatedUser) => {
+//         if (err) {
+//           console.error(err);
+//           res.status(500).send('Error: ' + err);
+//         } else {
+//           res.json(updatedUser);
+//         }
+//       }
+//     );
+//   }
+// );
 
 // Allows users to add a movie to their list of favorites
 app.post(
