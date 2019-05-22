@@ -267,9 +267,9 @@ app.put(
           Birthday: req.body.Birthday
         }
       },
-      {
-        new: true
-      }, // This line makes sure that the updated document is returned
+      // {
+      //   new: true
+      // }, // This line makes sure that the updated document is returned
       (err, updatedUser) => {
         if (err) {
           console.error(err);
