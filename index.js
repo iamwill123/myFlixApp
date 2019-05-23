@@ -240,11 +240,11 @@ app.get(
 
 // get a single user by id
 app.get(
-  '/user/:id',
+  '/user/:Id',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     User.findOne({
-      _id: req.params.id
+      _id: req.params.Id
     })
       .then(user => {
         res.status(201).json(user);
@@ -273,11 +273,29 @@ app.get(
 );
 
 // Allows to update user by :id is case sensitive
-
 app.put(
   '/user/:id',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    // Validation logic here for request
+    req.checkBody('Username', 'Username is required').notEmpty();
+    req
+      .checkBody(
+        'Username',
+        'Username contains non alphanumeric characters - not allowed.'
+      )
+      .isAlphanumeric();
+    req.checkBody('Password', 'Password is required').notEmpty();
+    req.checkBody('Email', 'Email is required').notEmpty();
+    req.checkBody('Email', 'Email does not appear to be valid').isEmail();
+
+    // check the validation object for errors
+    var errors = req.validationErrors();
+    console.log(errors);
+    if (errors) {
+      return res.status(422).json({ errors: errors });
+    }
+    var hashedPassword = User.hashPassword(req.body.Password);
     User.update(
       {
         _id: req.params.id
@@ -285,7 +303,7 @@ app.put(
       {
         $set: {
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday
         }
