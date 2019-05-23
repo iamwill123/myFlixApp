@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 
 import { localStore } from '../../helpers/localStorageClient';
 import './global.scss';
+// import { isEmpty } from '../../helpers/isEmpty';
 
 const mapState = ({ user }) => ({
   user
@@ -45,12 +46,12 @@ const GlobalNavbar = ({ user, location }) => {
                 People
               </Nav.Link>
               <NavDropdown
-                title={`👤 ${user.Username}`}
+                title={`👤 ${user.Username ? user.Username : 'Anonymous'}`}
                 id="collasible-nav-dropdown"
               >
                 <NavDropdown.Item
                   as={NavLink}
-                  to={`/profile/${user.Username}`}
+                  to={`/profile/${user._id}`}
                   exact
                 >
                   Profile

@@ -150,7 +150,7 @@ class MainView extends Component {
           />
           <PrivateRoute exact path="/genres/:name" component={GenreView} />
           <PrivateRoute path="/users" component={UserList} />
-          <PrivateRoute path="/profile/:username" component={ProfileView} />
+          <PrivateRoute path="/profile/:id" component={ProfileView} />
 
           <Route
             render={({ location }) => (

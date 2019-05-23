@@ -49,6 +49,20 @@ const getUser = async (username, token) => {
   }
 };
 
+const getUserById = async (id, token) => {
+  try {
+    let user = await axios.get(`${baseURL}${endpoints['user']}/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    let response = await checkStatus(user);
+    const { data } = response;
+		console.log("TCL: getUserById -> data", data)
+    return data;
+  } catch (error) {
+    console.log('getCurrentUser', error);
+  }
+};
+
 const addToFavorites = async (username, movieId) => {
   let token = await localStore.token;
   return await axios.post(
@@ -83,11 +97,11 @@ const getUsers = async token => {
   }
 };
 
-const updateUser = async (username, email, birthday, password) => {
+const updateUser = async (_id, username, email, birthday, password) => {
   try {
     let token = await localStorage.getItem('token');
     let updatedUser = await axios.put(
-      `${baseURL}${endpoints['user']}/${username}`,
+      `${baseURL}${endpoints['user']}/${_id}`,
       {
         Username: username,
         Email: email,
@@ -144,6 +158,7 @@ export {
   registerUser,
   loginUser,
   getUser,
+  getUserById,
   updateUser,
   deleteUser,
   getUsers,

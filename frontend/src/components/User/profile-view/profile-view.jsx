@@ -59,6 +59,7 @@ class ProfileView extends Component {
   render() {
     if (
       isEmpty(this.props.user) ||
+      this.props.user === null ||
       isEmpty(this.props.token) ||
       isEmpty(this.props.users)
     )
@@ -67,9 +68,9 @@ class ProfileView extends Component {
     const { user, users, token, match } = this.props;
 
     const currentUser =
-      user === match.params.username
+      user._id === match.params.id
         ? user
-        : users.find(u => u.Username === match.params.username);
+        : users.find(u => u._id === match.params.id);
 
     const { Username, Email, FavoriteMovies } = currentUser;
 

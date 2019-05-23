@@ -8,6 +8,7 @@ import AlertView from '../../ReusableComponents/alert-view/alert-view';
 import { updateUser, getUser } from '../../../helpers/movieAPI';
 import { setUser } from '../../../redux/actions/actions';
 import { localStore } from '../../../helpers/localStorageClient';
+import { isEmpty } from '../../../helpers/isEmpty';
 
 const mapState = ({ user }) => {
   return {
@@ -19,11 +20,15 @@ const actions = { setUser };
 
 const UpdateUserView = props => {
   console.log('UpdateUserView', props);
+
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState(props.user.Username);
   const [email, setEmail] = useState(props.user.Email);
-  const [password] = useState(props.user.Password);
-  const [birthday, setBirthday] = useState(props.user.Birthday.slice(0, -14));
+  const [password, setPassword] = useState(props.user.Password);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [birthday, setBirthday] = useState(
+    props.user.Birthday ? props.user.Birthday.slice(0, -14) : ''
+  );
   const [validate, setValidation] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -40,7 +45,7 @@ const UpdateUserView = props => {
     setValidation(true);
     setLoading(true);
 
-    updateUser(username, email, birthday, password)
+    updateUser(props.user._id, username, email, birthday, password)
       .then(response => {
         console.log('TCL: response', response);
         if (response === 200) {
@@ -50,14 +55,23 @@ const UpdateUserView = props => {
           setSuccess(
             `🎉 Hey ${username}, you updated successfully., please wait a few seconds for the data to update.`
           );
-          // const { token } = localStore;
-          // localStore.setTokenAndUsername(token, username);
-          setTimeout(() => props.onUpdate(), 5000);
+          const { token } = localStore;
+          localStore.setTokenAndUsername(token, username);
+          let getCurrentUser = getUser(username, token);
+          console.log('TCL: getCurrentUser', getCurrentUser);
+          debugger;
+          getCurrentUser
+            .then(response => {
+              console.log('TCL: response getCurrentUser', response);
+              props.setUser(response);
+            })
+            .finally(() => setTimeout(() => props.onUpdate(), 5000));
+          // setTimeout(() => props.onUpdate(), 5000);
         }
       })
       // .then(username => {
       //   const { token } = localStore;
-      //   let getCurrentUser = getUser(username, token);
+      //   let getCurrentUser = getUserById(username, token);
       //   props.setUser(getCurrentUser);
       // })
       .catch(error => {
@@ -74,7 +88,7 @@ const UpdateUserView = props => {
         console.log('Error', errorResponse);
       });
   };
-
+  if (isEmpty(props.user)) return 'Loading';
   return (
     <Form noValidate validated={validate} onSubmit={e => handleSubmit(e)}>
       <Form.Group controlId="formBasicEmailRegister">
@@ -121,10 +135,54 @@ const UpdateUserView = props => {
         />
       </Form.Group>
 
+      <Form.Group controlId="formBasicPasswordRegister">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
+        <Form.Control.Feedback type="invalid">
+          Please provide a password.
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group controlId="formBasicConfirmPasswordRegister">
+        <Form.Label>Confirm Password</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={e => setConfirmPassword(e.target.value)}
+          required
+        />
+        <Form.Control.Feedback type="invalid">
+          Please confirm password.
+        </Form.Control.Feedback>
+        {password !== confirmPassword && (
+          <AlertView variant="warning">
+            Confirm password and password do not match.
+          </AlertView>
+        )}
+      </Form.Group>
+
       <Button
-        variant={!username || !email ? 'outline-secondary' : 'outline-primary'}
+        variant={
+          !username || !email || !password
+            ? 'outline-secondary'
+            : 'outline-primary'
+        }
         type="submit"
-        disabled={!username || !email || success || loading}
+        disabled={
+          !username ||
+          !email ||
+          !password.includes(confirmPassword) ||
+          password !== confirmPassword ||
+          success ||
+          loading
+        }
       >
         {loading
           ? (
