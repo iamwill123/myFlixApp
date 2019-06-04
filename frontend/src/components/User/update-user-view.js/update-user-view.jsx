@@ -52,28 +52,19 @@ const UpdateUserView = props => {
           setTimeout(() => setLoading(false), 1000);
           setErrorValidation('');
           setError('');
-          setSuccess(
-            `🎉 Hey ${username}, you updated successfully., please wait a few seconds for the data to update.`
-          );
+          setSuccess(`🎉 Hey ${username}, you updated successfully.`);
           const { token } = localStore;
           localStore.setTokenAndUsername(token, username);
           let getCurrentUser = getUser(username, token);
           console.log('TCL: getCurrentUser', getCurrentUser);
-          debugger;
           getCurrentUser
             .then(response => {
               console.log('TCL: response getCurrentUser', response);
               props.setUser(response);
             })
             .finally(() => setTimeout(() => props.onUpdate(), 5000));
-          // setTimeout(() => props.onUpdate(), 5000);
         }
       })
-      // .then(username => {
-      //   const { token } = localStore;
-      //   let getCurrentUser = getUserById(username, token);
-      //   props.setUser(getCurrentUser);
-      // })
       .catch(error => {
         let errorResponse = error.response.data.errors[0];
         const { msg, param, value } = errorResponse;

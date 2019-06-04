@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express'),
   app = express(),
   morgan = require('morgan'),
@@ -48,8 +49,7 @@ app.use(validator());
 //   useNewUrlParser: true
 // });
 // MongoDB connection string
-var connection =
-  'mongodb+srv://myFlixDBadmin:Posty321!@cluster0-3rjjl.gcp.mongodb.net/myFlixDB?retryWrites=true';
+var connection = process.env.MONGODB_CLUSTER_CRED;
 mongoose.connect(connection, {
   useNewUrlParser: true
 });
