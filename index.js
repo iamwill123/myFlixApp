@@ -50,7 +50,6 @@ app.use(validator());
 // });
 // MongoDB connection string
 var CRED = process.env.MONGODB_CLUSTER_CRED;
-console.log(CRED);
 mongoose.connect(`mongodb+srv://${CRED}@cluster0-3rjjl.gcp.mongodb.net/myFlixDB?retryWrites=true`, {
   useNewUrlParser: true
 });
