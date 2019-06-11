@@ -25,18 +25,18 @@ const FavoriteMoviesView = ({ movieId, token }) => {
       {/* <Card.Img variant="top" src={unsplashPlaceholder('', movie.Title)} /> */}
       <Card.Header as="h5">{movie.Title}</Card.Header>
       <Card.Body>
-        <NavLink to={`/directors/${movie.Director.Name}`}>
+        <NavLink to={`/myFlixApp/directors/${movie.Director.Name}`}>
           <Card.Text style={{ marginBottom: '5%' }}>
             {movie.Director.Name}
           </Card.Text>
         </NavLink>
         <Card.Text style={{ marginBottom: '0' }}>{movie.Description}</Card.Text>
-        <NavLink to={`/genres/${movie.Genre.Name}`}>
+        <NavLink to={`/myFlixApp/genres/${movie.Genre.Name}`}>
           <Card.Text style={{ marginBottom: '5%' }}>
             <small className="text-muted">#{movie.Genre.Name}</small>
           </Card.Text>
         </NavLink>
-        <NavLink to={`/movies/${movie._id}`}>
+        <NavLink to={`/myFlixApp/movies/${movie._id}`}>
           <Button variant="outline-dark">Read more</Button>
         </NavLink>
       </Card.Body>

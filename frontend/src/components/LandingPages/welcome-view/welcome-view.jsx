@@ -39,7 +39,7 @@ const WelcomeView = ({
 
       {localStore.isLoggedIn() ? (
         <>
-          <NavLink to={`/movies`}>
+          <NavLink to={`/myFlixApp/movies`}>
             <Button variant="outline-primary">View Movies</Button>
           </NavLink>
         </>

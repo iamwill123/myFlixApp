@@ -20,7 +20,7 @@ const mapState = ({ user }) => ({
 const GlobalNavbar = ({ user, location }) => {
   const onLoggedOut = () => {
     localStore.removeTokenAndUsername();
-    setTimeout(() => (window.location.href = '/'), 0);
+    setTimeout(() => (window.location.href = '/myFlixApp'), 0);
   };
 
   return (
@@ -39,10 +39,10 @@ const GlobalNavbar = ({ user, location }) => {
         {localStore.isLoggedIn() && (
           <>
             <Nav className="mr-auto">
-              <Nav.Link as={NavLink} to={`/movies`} exact>
+              <Nav.Link as={NavLink} to={`/myFlixApp/movies`} exact>
                 Movies
               </Nav.Link>
-              <Nav.Link as={NavLink} to={`/users`} exact>
+              <Nav.Link as={NavLink} to={`/myFlixApp/users`} exact>
                 People
               </Nav.Link>
               <NavDropdown
@@ -51,7 +51,7 @@ const GlobalNavbar = ({ user, location }) => {
               >
                 <NavDropdown.Item
                   as={NavLink}
-                  to={`/profile/${user._id}`}
+                  to={`/myFlixApp/profile/${user._id}`}
                   exact
                 >
                   Profile

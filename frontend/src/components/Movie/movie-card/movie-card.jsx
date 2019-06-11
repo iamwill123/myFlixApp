@@ -73,18 +73,18 @@ const MovieCard = ({ movie, currentUser }) => {
         {movie.Title} <sup>[{avgVote}]</sup>
       </Card.Header>
       <Card.Body>
-        <Link to={`/directors/${movie.Director.Name}`}>
+        <Link to={`/myFlixApp/directors/${movie.Director.Name}`}>
           <Card.Text style={{ marginBottom: '5%' }}>
             {movie.Director.Name}
           </Card.Text>
         </Link>
         <Card.Text style={{ marginBottom: '0' }}>{movie.Description}</Card.Text>
-        <Link to={`/genres/${movie.Genre.Name}`}>
+        <Link to={`/myFlixApp/genres/${movie.Genre.Name}`}>
           <Card.Text style={{ marginBottom: '5%' }}>
             <small className="text-muted">#{movie.Genre.Name}</small>
           </Card.Text>
         </Link>
-        <Link to={`/movies/${movie._id}`}>
+        <Link to={`/myFlixApp/movies/${movie._id}`}>
           <Button variant="outline-dark">Read more</Button>
         </Link>
         {currentUser.FavoriteMovies.find(m => m === movie._id) ? (

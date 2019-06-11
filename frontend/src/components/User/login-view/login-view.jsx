@@ -34,7 +34,7 @@ const LoginView = props => {
       })
       .catch(e => {
         setLoading(false);
-        console.log(e.response);
+        console.log(e);
         let errorMessage = e.response.data.message;
         setError(errorMessage);
       });

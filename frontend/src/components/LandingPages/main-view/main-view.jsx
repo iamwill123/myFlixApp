@@ -130,7 +130,7 @@ class MainView extends Component {
           {/* <Redirect to={this.redirectPath()} /> */}
           <Route
             exact
-            path="/myFlixApp"
+            path="/myFlixApp/"
             render={() => (
               <WelcomeView
                 modalShow={modalShow}
@@ -141,16 +141,16 @@ class MainView extends Component {
               />
             )}
           />
-          <PrivateRoute path="/movies" component={MoviesList} exact />
-          <PrivateRoute path="/movies/:movieId" component={MovieView} exact />
+          <PrivateRoute path="/myFlixApp/movies" component={MoviesList} exact />
+          <PrivateRoute path="/myFlixApp/movies/:movieId" component={MovieView} exact />
           <PrivateRoute
-            path="/directors/:name"
+            path="/myFlixApp/directors/:name"
             component={DirectorView}
             exact
           />
-          <PrivateRoute exact path="/genres/:name" component={GenreView} />
-          <PrivateRoute path="/users" component={UserList} />
-          <PrivateRoute path="/profile/:id" component={ProfileView} />
+          <PrivateRoute exact path="/myFlixApp/genres/:name" component={GenreView} />
+          <PrivateRoute path="/myFlixApp/users" component={UserList} />
+          <PrivateRoute path="/myFlixApp/profile/:id" component={ProfileView} />
 
           <Route
             render={({ location }) => (
