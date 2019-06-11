@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/myFlixApp/static/css/main.d5dc67bb.chunk.css",
-    "main.js": "/myFlixApp/static/js/main.d76d9874.chunk.js",
-    "main.js.map": "/myFlixApp/static/js/main.d76d9874.chunk.js.map",
+    "main.js": "/myFlixApp/static/js/main.e1abd5ef.chunk.js",
+    "main.js.map": "/myFlixApp/static/js/main.e1abd5ef.chunk.js.map",
     "runtime~main.js": "/myFlixApp/static/js/runtime~main.342561a4.js",
     "runtime~main.js.map": "/myFlixApp/static/js/runtime~main.342561a4.js.map",
     "static/css/2.22a7d4ef.chunk.css": "/myFlixApp/static/css/2.22a7d4ef.chunk.css",
-    "static/js/2.29cea760.chunk.js": "/myFlixApp/static/js/2.29cea760.chunk.js",
-    "static/js/2.29cea760.chunk.js.map": "/myFlixApp/static/js/2.29cea760.chunk.js.map",
+    "static/js/2.4a455fab.chunk.js": "/myFlixApp/static/js/2.4a455fab.chunk.js",
+    "static/js/2.4a455fab.chunk.js.map": "/myFlixApp/static/js/2.4a455fab.chunk.js.map",
     "index.html": "/myFlixApp/index.html",
-    "precache-manifest.3acac7af2f16ed10da38a76dcc0ebab2.js": "/myFlixApp/precache-manifest.3acac7af2f16ed10da38a76dcc0ebab2.js",
+    "precache-manifest.f8c1b6402770551844e56ba3b845abf1.js": "/myFlixApp/precache-manifest.f8c1b6402770551844e56ba3b845abf1.js",
     "service-worker.js": "/myFlixApp/service-worker.js",
     "static/css/2.22a7d4ef.chunk.css.map": "/myFlixApp/static/css/2.22a7d4ef.chunk.css.map",
     "static/css/main.d5dc67bb.chunk.css.map": "/myFlixApp/static/css/main.d5dc67bb.chunk.css.map"
