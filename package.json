@@ -22,7 +22,7 @@
   "homepage": "https://github.com/iamwill123/myFlixApp#readme",
   "dependencies": {
     "axios": "^0.18.0",
-    "bcrypt": "^3.0.5",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
